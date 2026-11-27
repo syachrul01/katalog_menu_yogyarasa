@@ -382,10 +382,11 @@
     let searchQuery = "";
     let onlyBudgetUnder20k = false;
 
-    // State khusus Modal Detail Tenant
+    // State khusus Modal Detail Tenant & History Back HP
     let activeModalTenant = null;
     let modalSortOrder = "default"; // 'default' | 'asc' | 'desc'
     let modalOnlyUnder20k = false;
+    let activeOverlayType = null; // null | 'welcome' | 'menu'
 
     // Format angka ke Rupiah (contoh: 22000 -> Rp 22.000)
     function formatRupiah(nominal) {
@@ -409,6 +410,24 @@
       return clean ? clean.charAt(0).toUpperCase() : "T";
     }
 
+    // --- DUKUNGAN TOMBOL BACK HP (HISTORY API) ---
+    function pushOverlayHistory(type) {
+      activeOverlayType = type;
+      if (!history.state || history.state.overlay !== type) {
+        history.pushState({ overlay: type }, "");
+      }
+    }
+
+    window.addEventListener("popstate", () => {
+      if (activeOverlayType === "menu") {
+        hideTenantModalDOM();
+        activeOverlayType = null;
+      } else if (activeOverlayType === "welcome") {
+        hideWelcomeModalDOM();
+        activeOverlayType = null;
+      }
+    });
+
     // --- WELCOME POPUP LOGIC ---
     function showWelcomeModalIfFirstVisit() {
       const alreadySeen = sessionStorage.getItem("yogya_rasa_welcomed");
@@ -420,6 +439,7 @@
 
       modal.classList.remove("hidden");
       document.body.classList.add("overflow-hidden");
+      pushOverlayHistory("welcome");
 
       requestAnimationFrame(() => {
         backdrop.classList.remove("opacity-0");
@@ -427,7 +447,7 @@
       });
     }
 
-    function closeWelcomeModal() {
+    function hideWelcomeModalDOM() {
       const modal = document.getElementById("welcomeModal");
       const backdrop = document.getElementById("welcomeBackdrop");
       const card = document.getElementById("welcomeCard");
@@ -440,6 +460,14 @@
         modal.classList.add("hidden");
         document.body.classList.remove("overflow-hidden");
       }, 240);
+    }
+
+    function closeWelcomeModal() {
+      if (activeOverlayType === "welcome") {
+        history.back(); // Memicu popstate -> hideWelcomeModalDOM()
+      } else {
+        hideWelcomeModalDOM();
+      }
     }
 
     function startWithCategory(cat) {
@@ -711,7 +739,6 @@
 
       activeModalTenant = tenant;
       modalSortOrder = "default";
-      // Sinkronkan filter < 20rb jika sedang aktif di halaman luar
       modalOnlyUnder20k = onlyBudgetUnder20k;
 
       document.getElementById("modalInitialBox").textContent = getInitial(tenant.nama_tenant);
@@ -737,6 +764,7 @@
 
       modal.classList.remove("hidden");
       document.body.classList.add("overflow-hidden");
+      pushOverlayHistory("menu");
 
       requestAnimationFrame(() => {
         backdrop.classList.remove("opacity-0");
@@ -744,8 +772,8 @@
       });
     }
 
-    // Tutup Bottom Sheet Modal
-    function closeTenantModal() {
+    // Tutup DOM Bottom Sheet Modal
+    function hideTenantModalDOM() {
       const modal = document.getElementById("menuModal");
       const backdrop = document.getElementById("modalBackdrop");
       const panel = document.getElementById("modalPanel");
@@ -758,6 +786,15 @@
         document.body.classList.remove("overflow-hidden");
         activeModalTenant = null;
       }, 260);
+    }
+
+    // Tutup Bottom Sheet Modal (via tombol / klik luar)
+    function closeTenantModal() {
+      if (activeOverlayType === "menu") {
+        history.back(); // Memicu popstate -> hideTenantModalDOM()
+      } else {
+        hideTenantModalDOM();
+      }
     }
 
     // Fetch data dari backend Express (/api/menu)
@@ -819,9 +856,9 @@
 
     document.addEventListener("keydown", (e) => {
       if (e.key === "Escape") {
-        if (!document.getElementById("welcomeModal").classList.contains("hidden")) {
+        if (activeOverlayType === "welcome") {
           closeWelcomeModal();
-        } else if (activeModalTenant) {
+        } else if (activeOverlayType === "menu") {
           closeTenantModal();
         }
       }
