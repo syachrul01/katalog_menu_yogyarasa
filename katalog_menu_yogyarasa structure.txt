@@ -1,0 +1,11 @@
+katalog_menu_yogyarasa/
+├── api/
+│   └── index.js          # Server Express.js (Proxy API + Caching)
+├── public/
+│   ├── index.html        # Halaman UI utama (akan diisi di Tahap 3)
+│   └── assets/           # Folder aset statis (background motif kayu, logo, ikon)
+├── .env                  # Menyimpan URL Apps Script (rahasia, tidak masuk GitHub)
+├── .env.example          # Contoh variabel environment untuk dokumentasi repo
+├── .gitignore            # Mengabaikan node_modules dan .env
+├── package.json          # Konfigurasi Node.js & dependensi
+└── vercel.json           # Aturan routing API & file statis di Vercel

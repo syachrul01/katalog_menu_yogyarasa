@@ -1,0 +1,541 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+  <title>Yogya Rasa — Katalog Menu Kuliner</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    body {
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      background-color: #B87743;
+      background-image: url('/assets/wood-bg.svg');
+      background-repeat: repeat;
+      background-size: 360px auto;
+    }
+
+    /* Sembunyikan scrollbar horizontal pada filter kategori */
+    .no-scrollbar::-webkit-scrollbar {
+      display: none;
+    }
+    .no-scrollbar {
+      -ms-overflow-style: none;
+      scrollbar-width: none;
+    }
+
+    /* Animasi Bottom Sheet */
+    .sheet-backdrop {
+      transition: opacity 0.25s ease;
+    }
+    .sheet-panel {
+      transition: transform 0.32s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+  </style>
+</head>
+<body class="text-stone-900 antialiased selection:bg-orange-200">
+
+  <!-- Wrapper Mobile-First di atas Latar Kayu -->
+  <div class="max-w-md mx-auto min-h-screen flex flex-col relative shadow-2xl bg-amber-950/10 backdrop-blur-[1px]">
+
+    <!-- Sticky Header: Brand, Search Bar, & Filter Kategori -->
+    <header class="sticky top-0 z-20 bg-[#FAF6F1]/95 backdrop-blur-md border-b border-stone-200/80 px-4 pt-4 pb-3 shadow-sm">
+      <!-- Baris Judul -->
+      <div class="flex items-center justify-between gap-3 mb-3">
+        <div class="flex items-center gap-2.5">
+          <div class="w-9 h-9 rounded-xl bg-zinc-900 flex items-center justify-center text-amber-400 shadow-sm shrink-0">
+            <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
+              <circle cx="12" cy="12" r="9" />
+            </svg>
+          </div>
+          <div>
+            <h1 class="text-base font-extrabold tracking-tight text-zinc-900 leading-none">YOGYA RASA</h1>
+            <p class="text-[11px] font-medium text-stone-500 mt-1">Katalog Menu & Tenant Kuliner</p>
+          </div>
+        </div>
+
+        <span id="tenantBadge" class="text-[11px] font-bold bg-amber-100 text-amber-800 border border-amber-200/80 px-2.5 py-1 rounded-full shrink-0">
+          Memuat...
+        </span>
+      </div>
+
+      <!-- Search Bar -->
+      <div class="relative">
+        <input
+          type="text"
+          id="searchInput"
+          placeholder="Cari tenant atau menu (misal: dimsum, kopi, steak)..."
+          class="w-full pl-4 pr-11 py-2.5 bg-white border border-stone-200 focus:border-orange-600 focus:ring-2 focus:ring-orange-500/20 rounded-xl text-sm text-stone-800 placeholder:text-stone-400 outline-none transition shadow-xs"
+        />
+        <button
+          id="clearSearchBtn"
+          type="button"
+          title="Hapus pencarian"
+          class="hidden absolute right-10 top-1/2 -translate-y-1/2 text-stone-400 hover:text-stone-700 p-1 text-xs font-bold"
+        >
+          ✕
+        </button>
+        <div class="w-7 h-7 rounded-lg bg-orange-600 text-white flex items-center justify-center absolute right-1.5 top-1/2 -translate-y-1/2 pointer-events-none">
+          <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M21 21l-4.35-4.35m0 0A7.5 7.5 0 103.5 10.5a7.5 7.5 0 0013.15 6.15z" />
+          </svg>
+        </div>
+      </div>
+
+      <!-- Pill Filter Kategori -->
+      <div id="categoryPills" class="flex items-center gap-2 overflow-x-auto no-scrollbar pt-3 pb-0.5">
+        <!-- Dirender dinamis dari /api/menu -->
+      </div>
+    </header>
+
+    <!-- Daftar Kartu Tenant -->
+    <main class="flex-1 px-4 py-4">
+      <!-- State Loading -->
+      <div id="loadingState" class="space-y-3">
+        <div class="bg-white/90 rounded-2xl p-4 animate-pulse flex items-center gap-3.5">
+          <div class="w-12 h-12 rounded-xl bg-stone-200"></div>
+          <div class="flex-1 space-y-2">
+            <div class="h-4 bg-stone-200 rounded w-1/2"></div>
+            <div class="h-3 bg-stone-100 rounded w-3/4"></div>
+            <div class="h-6 bg-orange-100 rounded-full w-24 mt-1"></div>
+          </div>
+        </div>
+        <div class="bg-white/90 rounded-2xl p-4 animate-pulse flex items-center gap-3.5">
+          <div class="w-12 h-12 rounded-xl bg-stone-200"></div>
+          <div class="flex-1 space-y-2">
+            <div class="h-4 bg-stone-200 rounded w-2/5"></div>
+            <div class="h-3 bg-stone-100 rounded w-2/3"></div>
+            <div class="h-6 bg-orange-100 rounded-full w-24 mt-1"></div>
+          </div>
+        </div>
+        <div class="bg-white/90 rounded-2xl p-4 animate-pulse flex items-center gap-3.5">
+          <div class="w-12 h-12 rounded-xl bg-stone-200"></div>
+          <div class="flex-1 space-y-2">
+            <div class="h-4 bg-stone-200 rounded w-3/5"></div>
+            <div class="h-3 bg-stone-100 rounded w-1/2"></div>
+            <div class="h-6 bg-orange-100 rounded-full w-24 mt-1"></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- State Error -->
+      <div id="errorState" class="hidden bg-white/95 rounded-2xl p-6 text-center shadow-md border border-red-100">
+        <p class="text-sm font-bold text-stone-800">Gagal memuat daftar menu</p>
+        <p id="errorDetail" class="text-xs text-stone-500 mt-1">Periksa koneksi internet Anda lalu coba lagi.</p>
+        <button
+          type="button"
+          onclick="loadMenuData()"
+          class="mt-4 px-4 py-2 bg-orange-600 hover:bg-orange-700 text-white text-xs font-bold rounded-xl transition"
+        >
+          Muat Ulang
+        </button>
+      </div>
+
+      <!-- State Pencarian Kosong -->
+      <div id="emptyState" class="hidden bg-white/95 rounded-2xl p-8 text-center shadow-md">
+        <p class="text-sm font-bold text-stone-800">Tenant atau menu tidak ditemukan</p>
+        <p class="text-xs text-stone-500 mt-1">Coba kata kunci lain atau pilih kategori "Semua".</p>
+        <button
+          type="button"
+          onclick="resetFilters()"
+          class="mt-4 px-4 py-2 bg-amber-100 text-amber-900 text-xs font-bold rounded-xl hover:bg-amber-200 transition"
+        >
+          Reset Pencarian
+        </button>
+      </div>
+
+      <!-- Container Kartu Tenant -->
+      <div id="tenantGrid" class="space-y-3"></div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="py-4 px-4 text-center">
+      <div class="inline-block bg-zinc-900/75 text-amber-100/90 backdrop-blur-xs text-[11px] font-medium px-3.5 py-1.5 rounded-full">
+        Ketuk kartu tenant untuk melihat daftar menu & harga
+      </div>
+    </footer>
+  </div>
+
+  <!-- Bottom Sheet / Modal Detail Menu -->
+  <div id="menuModal" class="fixed inset-0 z-50 hidden" role="dialog" aria-modal="true">
+    <!-- Backdrop -->
+    <div id="modalBackdrop" class="sheet-backdrop fixed inset-0 bg-zinc-950/60 backdrop-blur-[2px] opacity-0"></div>
+
+    <!-- Panel Bottom Sheet -->
+    <div
+      id="modalPanel"
+      class="sheet-panel fixed inset-x-0 bottom-0 max-w-md mx-auto bg-white rounded-t-3xl shadow-2xl translate-y-full flex flex-col max-h-[85vh]"
+    >
+      <!-- Drag Handle -->
+      <div class="pt-3 pb-1 flex justify-center shrink-0">
+        <div class="w-11 h-1.5 bg-stone-200 rounded-full"></div>
+      </div>
+
+      <!-- Header Modal -->
+      <div class="px-5 pt-2 pb-3.5 border-b border-stone-100 flex items-start justify-between gap-3 shrink-0">
+        <div class="flex items-center gap-3 min-w-0">
+          <div id="modalInitialBox" class="w-11 h-11 rounded-xl bg-zinc-900 text-amber-400 font-extrabold text-lg flex items-center justify-center shrink-0">
+            T
+          </div>
+          <div class="min-w-0">
+            <div class="flex items-center gap-2">
+              <h2 id="modalTenantName" class="text-base font-extrabold text-zinc-900 truncate">Nama Tenant</h2>
+            </div>
+            <p id="modalTenantMeta" class="text-xs text-stone-500 mt-0.5 truncate">Deskripsi • 0 menu tersedia</p>
+          </div>
+        </div>
+
+        <button
+          id="closeModalBtn"
+          type="button"
+          aria-label="Tutup"
+          class="w-8 h-8 rounded-full bg-stone-100 hover:bg-stone-200 text-stone-600 flex items-center justify-center transition shrink-0"
+        >
+          <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
+          </svg>
+        </button>
+      </div>
+
+      <!-- Filter Cepat di Dalam Modal (Jika menu tenant banyak) -->
+      <div id="modalSearchWrap" class="px-5 py-2.5 bg-stone-50/80 border-b border-stone-100 shrink-0 hidden">
+        <input
+          type="text"
+          id="modalMenuSearch"
+          placeholder="Cari menu di tenant ini..."
+          class="w-full px-3.5 py-2 bg-white border border-stone-200 focus:border-orange-600 rounded-xl text-xs outline-none transition"
+        />
+      </div>
+
+      <!-- Daftar Menu & Harga -->
+      <div id="modalMenuList" class="px-5 py-2 overflow-y-auto divide-y divide-stone-100 flex-1">
+        <!-- Item menu dirender lewat JS -->
+      </div>
+
+      <!-- Tombol Tutup Bawah -->
+      <div class="p-4 border-t border-stone-100 bg-[#FAF6F1] shrink-0">
+        <button
+          id="bottomCloseBtn"
+          type="button"
+          class="w-full py-3 rounded-xl bg-orange-600 hover:bg-orange-700 active:scale-[0.99] text-white font-bold text-sm shadow-sm transition"
+        >
+          Tutup Daftar Menu
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    let allTenants = [];
+    let categories = ["Semua"];
+    let activeCategory = "Semua";
+    let searchQuery = "";
+    let activeModalTenant = null;
+
+    // Format angka ke Rupiah (contoh: 22000 -> Rp 22.000)
+    function formatRupiah(nominal) {
+      const num = Number(nominal);
+      if (!num || isNaN(num)) return "Tanya Kasir";
+      return "Rp " + num.toLocaleString("id-ID");
+    }
+
+    // Mencegah karakter HTML berbahaya
+    function escapeHtml(text) {
+      return String(text || "")
+        .replace(/&/g, "&amp;")
+        .replace(/</g, "&lt;")
+        .replace(/>/g, "&gt;")
+        .replace(/"/g, "&quot;");
+    }
+
+    // Ambil inisial 1 huruf untuk kotak hitam-emas
+    function getInitial(name) {
+      const clean = String(name || "").trim();
+      return clean ? clean.charAt(0).toUpperCase() : "T";
+    }
+
+    // Render tombol filter kategori (Semua, Makanan, Camilan, Minuman)
+    function renderCategories() {
+      const container = document.getElementById("categoryPills");
+      container.innerHTML = categories.map(cat => {
+        const isActive = cat === activeCategory;
+        const btnClass = isActive
+          ? "bg-orange-600 text-white shadow-xs border-orange-600"
+          : "bg-amber-100/90 text-amber-900 border-amber-200/80 hover:bg-amber-200/80";
+
+        return `
+          <button
+            type="button"
+            onclick="selectCategory('${escapeHtml(cat).replace(/'/g, "\\'")}')"
+            class="px-3.5 py-1.5 rounded-full text-xs font-bold border whitespace-nowrap transition active:scale-95 ${btnClass}"
+          >
+            ${escapeHtml(cat)}
+          </button>
+        `;
+      }).join("");
+    }
+
+    function selectCategory(cat) {
+      activeCategory = cat;
+      renderCategories();
+      renderTenants();
+    }
+
+    function resetFilters() {
+      activeCategory = "Semua";
+      searchQuery = "";
+      document.getElementById("searchInput").value = "";
+      document.getElementById("clearSearchBtn").classList.add("hidden");
+      renderCategories();
+      renderTenants();
+    }
+
+    // Render daftar kartu tenant
+    function renderTenants() {
+      const grid = document.getElementById("tenantGrid");
+      const emptyState = document.getElementById("emptyState");
+      const badge = document.getElementById("tenantBadge");
+      const q = searchQuery.toLowerCase().trim();
+
+      const filtered = allTenants.filter(tenant => {
+        const matchCategory = activeCategory === "Semua" || tenant.kategori === activeCategory;
+        if (!matchCategory) return false;
+        if (!q) return true;
+
+        const matchName = tenant.nama_tenant.toLowerCase().includes(q);
+        const matchDesc = tenant.deskripsi.toLowerCase().includes(q);
+        const matchMenu = (tenant.menus || []).some(m => m.nama_menu.toLowerCase().includes(q));
+        return matchName || matchDesc || matchMenu;
+      });
+
+      badge.textContent = `${filtered.length} Tenant`;
+
+      if (filtered.length === 0) {
+        grid.innerHTML = "";
+        emptyState.classList.remove("hidden");
+        return;
+      }
+
+      emptyState.classList.add("hidden");
+      grid.innerHTML = filtered.map(tenant => {
+        // Jika pengunjung mencari nama makanan, tampilkan cuplikan menu yang cocok
+        let matchedHighlight = "";
+        if (q) {
+          const matchedMenus = (tenant.menus || [])
+            .filter(m => m.nama_menu.toLowerCase().includes(q))
+            .slice(0, 2)
+            .map(m => m.nama_menu);
+
+          if (matchedMenus.length > 0) {
+            matchedHighlight = `
+              <div class="mt-2 inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg bg-orange-50 border border-orange-200/70 text-[11px] font-semibold text-orange-800 max-w-full">
+                <span class="shrink-0">Cocok:</span>
+                <span class="truncate">${escapeHtml(matchedMenus.join(", "))}</span>
+              </div>
+            `;
+          }
+        }
+
+        return `
+          <div
+            onclick="openTenantModal('${escapeHtml(tenant.id).replace(/'/g, "\\'")}')"
+            role="button"
+            tabindex="0"
+            class="group bg-white/95 hover:bg-white border border-stone-200/90 hover:border-orange-400 rounded-2xl p-4 shadow-md hover:shadow-lg transition-all duration-150 cursor-pointer active:scale-[0.985]"
+          >
+            <div class="flex items-start gap-3.5">
+              <!-- Kotak Inisial Hitam-Emas khas FoodLife -->
+              <div class="w-12 h-12 rounded-xl bg-zinc-900 text-amber-400 font-extrabold text-lg flex items-center justify-center shadow-xs shrink-0 group-hover:bg-orange-600 group-hover:text-white transition-colors">
+                ${escapeHtml(getInitial(tenant.nama_tenant))}
+              </div>
+
+              <!-- Info Tenant -->
+              <div class="min-w-0 flex-1">
+                <div class="flex items-center justify-between gap-2">
+                  <h2 class="text-[15px] font-extrabold text-zinc-900 truncate">${escapeHtml(tenant.nama_tenant)}</h2>
+                  <span class="text-[10px] font-bold uppercase tracking-wider px-2 py-0.5 rounded-md bg-stone-100 text-stone-600 shrink-0">
+                    ${escapeHtml(tenant.kategori)}
+                  </span>
+                </div>
+
+                <p class="text-xs text-stone-500 mt-0.5 line-clamp-1">
+                  ${escapeHtml(tenant.deskripsi || `${tenant.total_menu} pilihan menu tersedia`)}
+                </p>
+
+                ${matchedHighlight}
+
+                <div class="mt-3 flex items-center justify-between">
+                  <span class="inline-flex items-center gap-1 px-3 py-1 rounded-full bg-orange-50 group-hover:bg-orange-600 text-orange-600 group-hover:text-white border border-orange-200 group-hover:border-orange-600 text-xs font-bold transition-colors">
+                    Lihat Menu (${tenant.total_menu})
+                    <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24">
+                      <path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7" />
+                    </svg>
+                  </span>
+                </div>
+              </div>
+            </div>
+          </div>
+        `;
+      }).join("");
+    }
+
+    // Render daftar item menu di dalam Bottom Sheet
+    function renderModalMenus(filterText = "") {
+      if (!activeModalTenant) return;
+      const listEl = document.getElementById("modalMenuList");
+      const globalQ = searchQuery.toLowerCase().trim();
+      const localQ = filterText.toLowerCase().trim();
+
+      const items = (activeModalTenant.menus || []).filter(item => {
+        if (!localQ) return true;
+        return item.nama_menu.toLowerCase().includes(localQ);
+      });
+
+      if (items.length === 0) {
+        listEl.innerHTML = `
+          <div class="py-10 text-center text-xs text-stone-400">
+            Menu tidak ditemukan di tenant ini.
+          </div>
+        `;
+        return;
+      }
+
+      listEl.innerHTML = items.map(item => {
+        const isMatch = (globalQ && item.nama_menu.toLowerCase().includes(globalQ)) ||
+                        (localQ && item.nama_menu.toLowerCase().includes(localQ));
+
+        return `
+          <div class="py-3.5 flex items-center justify-between gap-4 ${isMatch ? 'bg-orange-50/80 -mx-3 px-3 rounded-xl' : ''}">
+            <div class="min-w-0 flex-1">
+              <p class="text-sm font-semibold text-stone-800 leading-snug">${escapeHtml(item.nama_menu)}</p>
+            </div>
+            <span class="text-sm font-extrabold text-zinc-900 shrink-0 tabular-nums">
+              ${escapeHtml(formatRupiah(item.harga))}
+            </span>
+          </div>
+        `;
+      }).join("");
+    }
+
+    // Buka Bottom Sheet Modal
+    function openTenantModal(tenantId) {
+      const tenant = allTenants.find(t => t.id === tenantId);
+      if (!tenant) return;
+
+      activeModalTenant = tenant;
+      document.getElementById("modalInitialBox").textContent = getInitial(tenant.nama_tenant);
+      document.getElementById("modalTenantName").textContent = tenant.nama_tenant;
+      document.getElementById("modalTenantMeta").textContent =
+        `${tenant.deskripsi ? tenant.deskripsi + " • " : ""}${tenant.total_menu} menu`;
+
+      // Tampilkan search kecil di dalam modal jika menu tenant > 12 item
+      const modalSearchWrap = document.getElementById("modalSearchWrap");
+      const modalMenuSearch = document.getElementById("modalMenuSearch");
+      modalMenuSearch.value = "";
+      if ((tenant.menus || []).length > 12) {
+        modalSearchWrap.classList.remove("hidden");
+      } else {
+        modalSearchWrap.classList.add("hidden");
+      }
+
+      renderModalMenus("");
+
+      const modal = document.getElementById("menuModal");
+      const backdrop = document.getElementById("modalBackdrop");
+      const panel = document.getElementById("modalPanel");
+
+      modal.classList.remove("hidden");
+      document.body.classList.add("overflow-hidden");
+
+      requestAnimationFrame(() => {
+        backdrop.classList.remove("opacity-0");
+        panel.classList.remove("translate-y-full");
+      });
+    }
+
+    // Tutup Bottom Sheet Modal
+    function closeTenantModal() {
+      const modal = document.getElementById("menuModal");
+      const backdrop = document.getElementById("modalBackdrop");
+      const panel = document.getElementById("modalPanel");
+
+      backdrop.classList.add("opacity-0");
+      panel.classList.add("translate-y-full");
+
+      setTimeout(() => {
+        modal.classList.add("hidden");
+        document.body.classList.remove("overflow-hidden");
+        activeModalTenant = null;
+      }, 260);
+    }
+
+    // Fetch data dari backend Express (/api/menu)
+    async function loadMenuData() {
+      const loadingState = document.getElementById("loadingState");
+      const errorState = document.getElementById("errorState");
+      const tenantGrid = document.getElementById("tenantGrid");
+
+      loadingState.classList.remove("hidden");
+      errorState.classList.add("hidden");
+      tenantGrid.innerHTML = "";
+
+      try {
+        const res = await fetch("/api/menu");
+        const json = await res.json();
+
+        if (!res.ok || json.status !== "success") {
+          throw new Error(json.message || "Gagal mengambil data");
+        }
+
+        allTenants = json.tenants || [];
+        categories = json.categories || ["Semua"];
+
+        loadingState.classList.add("hidden");
+        renderCategories();
+        renderTenants();
+      } catch (err) {
+        loadingState.classList.add("hidden");
+        document.getElementById("errorDetail").textContent = err.message;
+        errorState.classList.remove("hidden");
+      }
+    }
+
+    // Event Listeners
+    const searchInput = document.getElementById("searchInput");
+    const clearSearchBtn = document.getElementById("clearSearchBtn");
+
+    searchInput.addEventListener("input", (e) => {
+      searchQuery = e.target.value;
+      clearSearchBtn.classList.toggle("hidden", !searchQuery);
+      renderTenants();
+    });
+
+    clearSearchBtn.addEventListener("click", () => {
+      searchQuery = "";
+      searchInput.value = "";
+      clearSearchBtn.classList.add("hidden");
+      renderTenants();
+    });
+
+    document.getElementById("modalMenuSearch").addEventListener("input", (e) => {
+      renderModalMenus(e.target.value);
+    });
+
+    document.getElementById("modalBackdrop").addEventListener("click", closeTenantModal);
+    document.getElementById("closeModalBtn").addEventListener("click", closeTenantModal);
+    document.getElementById("bottomCloseBtn").addEventListener("click", closeTenantModal);
+
+    document.addEventListener("keydown", (e) => {
+      if (e.key === "Escape" && activeModalTenant) {
+        closeTenantModal();
+      }
+    });
+
+    // Jalankan saat halaman dibuka
+    loadMenuData();
+  </script>
+</body>
+</html>
