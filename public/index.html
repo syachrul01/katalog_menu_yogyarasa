@@ -18,7 +18,6 @@
       background-size: 360px auto;
     }
 
-    /* Sembunyikan scrollbar horizontal pada filter kategori */
     .no-scrollbar::-webkit-scrollbar {
       display: none;
     }
@@ -27,7 +26,6 @@
       scrollbar-width: none;
     }
 
-    /* Animasi Bottom Sheet & Welcome Modal */
     .sheet-backdrop {
       transition: opacity 0.25s ease;
     }
@@ -44,7 +42,7 @@
   <!-- Wrapper Mobile-First di atas Latar Kayu -->
   <div class="max-w-md mx-auto min-h-screen flex flex-col relative shadow-2xl bg-amber-950/10 backdrop-blur-[1px]">
 
-    <!-- Sticky Header: Brand + Logo, Search Bar, & Filter Kategori -->
+    <!-- Sticky Header -->
     <header class="sticky top-0 z-20 bg-[#FAF6F1]/95 backdrop-blur-md border-b border-stone-200/80 px-4 pt-4 pb-3 shadow-sm">
       <!-- Baris Judul & Logo -->
       <div class="flex items-center justify-between gap-3 mb-3">
@@ -70,8 +68,8 @@
         <input
           type="text"
           id="searchInput"
-          placeholder="Cari tenant atau menu (misal: dimsum, kopi, steak)..."
-          class="w-full pl-4 pr-11 py-2.5 bg-white border border-stone-200 focus:border-orange-600 focus:ring-2 focus:ring-orange-500/20 rounded-xl text-sm text-stone-800 placeholder:text-stone-400 outline-none transition shadow-xs"
+          placeholder="Cari menu atau tenant (misal: ayam, dimsum, kopi)..."
+          class="w-full pl-4 pr-16 py-2.5 bg-white border border-stone-200 focus:border-orange-600 focus:ring-2 focus:ring-orange-500/20 rounded-xl text-sm text-stone-800 placeholder:text-stone-400 outline-none transition shadow-xs"
         />
         <button
           id="clearSearchBtn"
@@ -90,9 +88,7 @@
 
       <!-- Pill Filter Kategori + Filter Menu Hemat (< 20rb) -->
       <div class="flex items-center gap-2 overflow-x-auto no-scrollbar pt-3 pb-0.5">
-        <div id="categoryPills" class="flex items-center gap-2">
-          <!-- Dirender dinamis dari /api/menu -->
-        </div>
+        <div id="categoryPills" class="flex items-center gap-2"></div>
 
         <div class="h-4 w-[1px] bg-stone-300/80 shrink-0"></div>
 
@@ -107,13 +103,33 @@
       </div>
     </header>
 
-    <!-- Daftar Kartu Tenant -->
-    <main class="flex-1 px-4 py-4">
-      <!-- Banner Indikator Filter Aktif (Jika filter hemat menyala) -->
+    <!-- Konten Utama -->
+    <main class="flex-1 px-4 py-4 pb-24">
+      <!-- Banner Indikator Filter Hemat Aktif -->
       <div id="activeFilterNotice" class="hidden mb-3 px-3.5 py-2 rounded-xl bg-emerald-900/90 text-emerald-50 backdrop-blur-xs text-xs font-medium flex items-center justify-between gap-2 shadow-sm">
-        <span>Menampilkan tenant dengan menu di bawah <strong>Rp 20.000</strong></span>
+        <span>Menampilkan pilihan di bawah <strong>Rp 20.000</strong></span>
         <button type="button" onclick="toggleBudgetFilter()" class="text-[11px] font-bold underline text-emerald-200 hover:text-white shrink-0">
           Matikan
+        </button>
+      </div>
+
+      <!-- Switcher Tampilan Saat Pencarian Aktif (Per Menu vs Per Tenant) -->
+      <div id="searchModeBar" class="hidden mb-3 bg-[#FAF6F1]/95 p-1 rounded-xl border border-stone-200/90 shadow-xs flex items-center gap-1">
+        <button
+          type="button"
+          id="modeMenuBtn"
+          onclick="setSearchViewMode('menus')"
+          class="flex-1 py-1.5 rounded-lg text-xs font-extrabold transition"
+        >
+          Daftar Menu Cocok (<span id="matchedMenuCount">0</span>)
+        </button>
+        <button
+          type="button"
+          id="modeTenantBtn"
+          onclick="setSearchViewMode('tenants')"
+          class="flex-1 py-1.5 rounded-lg text-xs font-extrabold transition"
+        >
+          Per Tenant (<span id="matchedTenantCount">0</span>)
         </button>
       </div>
 
@@ -135,14 +151,6 @@
             <div class="h-6 bg-orange-100 rounded-full w-24 mt-1"></div>
           </div>
         </div>
-        <div class="bg-white/90 rounded-2xl p-4 animate-pulse flex items-center gap-3.5">
-          <div class="w-12 h-12 rounded-xl bg-stone-200"></div>
-          <div class="flex-1 space-y-2">
-            <div class="h-4 bg-stone-200 rounded w-3/5"></div>
-            <div class="h-3 bg-stone-100 rounded w-1/2"></div>
-            <div class="h-6 bg-orange-100 rounded-full w-24 mt-1"></div>
-          </div>
-        </div>
       </div>
 
       <!-- State Error -->
@@ -160,7 +168,7 @@
 
       <!-- State Pencarian Kosong -->
       <div id="emptyState" class="hidden bg-white/95 rounded-2xl p-8 text-center shadow-md">
-        <p class="text-sm font-bold text-stone-800">Tenant atau menu tidak ditemukan</p>
+        <p class="text-sm font-bold text-stone-800">Menu atau tenant tidak ditemukan</p>
         <p class="text-xs text-stone-500 mt-1">Coba kata kunci lain atau reset filter yang sedang aktif.</p>
         <button
           type="button"
@@ -171,16 +179,39 @@
         </button>
       </div>
 
-      <!-- Container Kartu Tenant -->
+      <!-- Container Kartu Tenant / Hasil Pencarian Menu -->
       <div id="tenantGrid" class="space-y-3"></div>
     </main>
 
     <!-- Footer -->
     <footer class="py-4 px-4 text-center">
       <div class="inline-block bg-zinc-900/75 text-amber-100/90 backdrop-blur-xs text-[11px] font-medium px-3.5 py-1.5 rounded-full">
-        Ketuk kartu tenant untuk melihat daftar menu & harga
+        Ketuk tenant untuk lihat menu atau gunakan "+ Catat" untuk hitung total
       </div>
     </footer>
+
+    <!-- FLOATING BAR CATATAN PESANAN / WISHLIST -->
+    <div id="notesFloatingBar" class="fixed inset-x-0 bottom-3 z-30 max-w-md mx-auto px-4 hidden">
+      <button
+        type="button"
+        onclick="openNotesModal()"
+        class="w-full bg-zinc-900 hover:bg-zinc-800 text-white border border-amber-400/40 rounded-2xl px-4 py-3 shadow-2xl flex items-center justify-between gap-3 transition active:scale-[0.985]"
+      >
+        <div class="flex items-center gap-3 min-w-0 text-left">
+          <span id="notesCountBadge" class="w-8 h-8 rounded-xl bg-orange-600 text-white font-extrabold text-xs flex items-center justify-center shrink-0">
+            0
+          </span>
+          <div class="min-w-0">
+            <p class="text-xs font-extrabold text-amber-300 leading-tight">Catatan Pilihan Menu</p>
+            <p id="notesTenantSummary" class="text-[11px] text-stone-300 truncate mt-0.5">0 tenant • Ketuk untuk rincian</p>
+          </div>
+        </div>
+        <div class="text-right shrink-0">
+          <p class="text-[10px] text-stone-400">Estimasi</p>
+          <p id="notesTotalPrice" class="text-sm font-extrabold text-white tabular-nums">Rp 0</p>
+        </div>
+      </button>
+    </div>
   </div>
 
   <!-- WELCOME POPUP SAMBUTAN AWAL -->
@@ -191,7 +222,6 @@
       id="welcomeCard"
       class="welcome-card relative z-10 w-full max-w-sm bg-[#FAF6F1] border border-amber-200/80 rounded-3xl shadow-2xl overflow-hidden opacity-0 scale-95"
     >
-      <!-- Aksen Header Hangat -->
       <div class="bg-gradient-to-br from-orange-600 via-orange-600 to-amber-600 px-6 pt-6 pb-8 text-center text-white relative">
         <div class="w-16 h-16 mx-auto rounded-2xl bg-white p-2 shadow-lg flex items-center justify-center">
           <img
@@ -204,11 +234,10 @@
           Selamat Datang di Yogya Rasa!
         </h2>
         <p class="text-xs text-orange-100 mt-1 leading-relaxed">
-          Jelajahi ragam kuliner favorit dari 19 tenant pilihan. Mau cari apa hari ini?
+          Pilih kategori di bawah atau langsung ketik menu favoritmu dari meja.
         </p>
       </div>
 
-      <!-- Pilihan Cepat Kategori -->
       <div class="px-5 py-5 -mt-3 bg-[#FAF6F1] rounded-t-3xl space-y-2.5">
         <button
           type="button"
@@ -266,15 +295,13 @@
     </div>
   </div>
 
-  <!-- BOTTOM SHEET / MODAL DETAIL MENU TENANT -->
+  <!-- BOTTOM SHEET / MODAL DETAIL MENU TENANT (VISUAL CARDS) -->
   <div id="menuModal" class="fixed inset-0 z-50 hidden" role="dialog" aria-modal="true">
-    <!-- Backdrop -->
     <div id="modalBackdrop" class="sheet-backdrop fixed inset-0 bg-zinc-950/60 backdrop-blur-[2px] opacity-0"></div>
 
-    <!-- Panel Bottom Sheet -->
     <div
       id="modalPanel"
-      class="sheet-panel fixed inset-x-0 bottom-0 max-w-md mx-auto bg-white rounded-t-3xl shadow-2xl translate-y-full flex flex-col max-h-[88vh]"
+      class="sheet-panel fixed inset-x-0 bottom-0 max-w-md mx-auto bg-white rounded-t-3xl shadow-2xl translate-y-full flex flex-col max-h-[90vh]"
     >
       <!-- Drag Handle -->
       <div class="pt-3 pb-1 flex justify-center shrink-0">
@@ -282,13 +309,18 @@
       </div>
 
       <!-- Header Modal -->
-      <div class="px-5 pt-2 pb-3 border-b border-stone-100 flex items-start justify-between gap-3 shrink-0">
+      <div class="px-5 pt-1.5 pb-3 border-b border-stone-100 flex items-start justify-between gap-3 shrink-0">
         <div class="flex items-center gap-3 min-w-0">
-          <div id="modalInitialBox" class="w-11 h-11 rounded-xl bg-zinc-900 text-amber-400 font-extrabold text-lg flex items-center justify-center shrink-0">
+          <div id="modalInitialBox" class="w-11 h-11 rounded-xl bg-zinc-900 text-amber-400 font-extrabold text-lg flex items-center justify-center shrink-0 shadow-xs">
             T
           </div>
           <div class="min-w-0">
-            <h2 id="modalTenantName" class="text-base font-extrabold text-zinc-900 truncate">Nama Tenant</h2>
+            <div class="flex items-center gap-2">
+              <h2 id="modalTenantName" class="text-base font-extrabold text-zinc-900 truncate">Nama Tenant</h2>
+              <span id="modalTenantCategory" class="text-[10px] font-bold uppercase px-2 py-0.5 rounded bg-amber-100 text-amber-900 shrink-0">
+                Kategori
+              </span>
+            </div>
             <p id="modalTenantMeta" class="text-xs text-stone-500 mt-0.5 truncate">Deskripsi • 0 menu tersedia</p>
           </div>
         </div>
@@ -305,9 +337,9 @@
         </button>
       </div>
 
-      <!-- Kontrol Filter & Urutkan Harga di Dalam Modal -->
-      <div class="px-5 py-2.5 bg-stone-50/90 border-b border-stone-100 shrink-0 space-y-2">
-        <!-- Input Cari di Tenant Ini (muncul jika menu > 10) -->
+      <!-- Kontrol Filter, Sub-Kategori Otomatis, & Urutkan Harga -->
+      <div class="px-5 py-2.5 bg-stone-50/95 border-b border-stone-100 shrink-0 space-y-2">
+        <!-- Input Cari di Tenant Ini -->
         <div id="modalSearchWrap" class="hidden">
           <input
             type="text"
@@ -315,6 +347,11 @@
             placeholder="Cari menu di tenant ini..."
             class="w-full px-3.5 py-2 bg-white border border-stone-200 focus:border-orange-600 rounded-xl text-xs outline-none transition"
           />
+        </div>
+
+        <!-- Sub-Tab Pengelompokan Otomatis (Jika tenant punya >= 2 grup menu) -->
+        <div id="modalSubGroupWrap" class="hidden flex items-center gap-1.5 overflow-x-auto no-scrollbar pb-0.5">
+          <!-- Dirender dinamis lewat JS -->
         </div>
 
         <!-- Bar Urutkan Harga & Filter Hemat -->
@@ -357,19 +394,81 @@
         </div>
       </div>
 
-      <!-- Daftar Menu & Harga -->
-      <div id="modalMenuList" class="px-5 py-2 overflow-y-auto divide-y divide-stone-100 flex-1">
+      <!-- Daftar Kartu Menu Visual -->
+      <div id="modalMenuList" class="px-4 py-3 overflow-y-auto space-y-2.5 flex-1 bg-stone-50/40">
         <!-- Item menu dirender lewat JS -->
       </div>
 
-      <!-- Tombol Tutup Bawah -->
-      <div class="p-4 border-t border-stone-100 bg-[#FAF6F1] shrink-0">
+      <!-- Footer Modal: Navigasi Antar Tenant + Tombol Tutup -->
+      <div class="p-3.5 border-t border-stone-100 bg-[#FAF6F1] shrink-0 flex items-center gap-2">
+        <button
+          type="button"
+          onclick="navigateTenant(-1)"
+          title="Tenant Sebelumnya"
+          class="px-3 py-2.5 rounded-xl bg-white hover:bg-stone-100 border border-stone-200 text-stone-700 font-bold text-xs transition shrink-0"
+        >
+          ‹ Prev
+        </button>
         <button
           id="bottomCloseBtn"
           type="button"
-          class="w-full py-3 rounded-xl bg-orange-600 hover:bg-orange-700 active:scale-[0.99] text-white font-bold text-sm shadow-sm transition"
+          class="flex-1 py-2.5 rounded-xl bg-orange-600 hover:bg-orange-700 active:scale-[0.99] text-white font-bold text-xs shadow-sm transition"
         >
           Tutup Daftar Menu
+        </button>
+        <button
+          type="button"
+          onclick="navigateTenant(1)"
+          title="Tenant Berikutnya"
+          class="px-3 py-2.5 rounded-xl bg-white hover:bg-stone-100 border border-stone-200 text-stone-700 font-bold text-xs transition shrink-0"
+        >
+          Next ›
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- BOTTOM SHEET CATATAN PILIHAN MENU (WISHLIST) -->
+  <div id="notesModal" class="fixed inset-0 z-50 hidden" role="dialog" aria-modal="true">
+    <div id="notesBackdrop" class="sheet-backdrop fixed inset-0 bg-zinc-950/60 backdrop-blur-[2px] opacity-0"></div>
+
+    <div
+      id="notesPanel"
+      class="sheet-panel fixed inset-x-0 bottom-0 max-w-md mx-auto bg-white rounded-t-3xl shadow-2xl translate-y-full flex flex-col max-h-[85vh]"
+    >
+      <div class="pt-3 pb-1 flex justify-center shrink-0">
+        <div class="w-11 h-1.5 bg-stone-200 rounded-full"></div>
+      </div>
+
+      <div class="px-5 pt-2 pb-3 border-b border-stone-100 flex items-center justify-between gap-3 shrink-0">
+        <div>
+          <h2 class="text-base font-extrabold text-zinc-900">Catatan Pilihan Menu</h2>
+          <p class="text-xs text-stone-500 mt-0.5">Dikelompokkan per tenant agar mudah dipesan</p>
+        </div>
+        <button
+          type="button"
+          onclick="clearAllNotes()"
+          class="text-xs font-bold text-red-600 hover:text-red-700 bg-red-50 px-2.5 py-1.5 rounded-lg"
+        >
+          Hapus Semua
+        </button>
+      </div>
+
+      <div id="notesListContainer" class="px-5 py-3 overflow-y-auto space-y-4 flex-1 bg-stone-50/40">
+        <!-- Daftar catatan dirender lewat JS -->
+      </div>
+
+      <div class="p-4 border-t border-stone-100 bg-[#FAF6F1] shrink-0 space-y-2.5">
+        <div class="flex items-center justify-between px-1">
+          <span class="text-xs font-bold text-stone-600">Total Estimasi Belanja</span>
+          <span id="notesModalTotal" class="text-base font-extrabold text-zinc-900 tabular-nums">Rp 0</span>
+        </div>
+        <button
+          type="button"
+          onclick="closeNotesModal()"
+          class="w-full py-3 rounded-xl bg-zinc-900 hover:bg-zinc-800 text-amber-300 font-bold text-xs transition"
+        >
+          Lanjut Lihat Menu Lainnya
         </button>
       </div>
     </div>
@@ -380,22 +479,112 @@
     let categories = ["Semua"];
     let activeCategory = "Semua";
     let searchQuery = "";
+    let searchViewMode = "menus"; // 'menus' | 'tenants'
     let onlyBudgetUnder20k = false;
 
     // State khusus Modal Detail Tenant & History Back HP
     let activeModalTenant = null;
-    let modalSortOrder = "default"; // 'default' | 'asc' | 'desc'
+    let modalSortOrder = "default";
     let modalOnlyUnder20k = false;
-    let activeOverlayType = null; // null | 'welcome' | 'menu'
+    let activeModalSubGroup = "Semua";
+    let activeOverlayType = null; // null | 'welcome' | 'menu' | 'notes'
 
-    // Format angka ke Rupiah (contoh: 22000 -> Rp 22.000)
+    // State Catatan Pilihan Menu (Wishlist)
+    let savedNotes = []; // [{ key, tenantId, tenantName, nama_menu, harga, qty }]
+
+    // --- FORMATTER TEKS & VISUAL OTOMATIS (TANPA UBAH SPREADSHEET) ---
+    function formatTitleCase(str) {
+      const upperAcronyms = new Set(["BBQ", "ML", "PCS", "TO", "DIY", "FC", "CF", "SD", "PET", "M", "L", "XL"]);
+      const lowerWords = new Set(["dan", "atau", "di", "ke", "dari", "yang", "untuk", "dengan", "isi"]);
+
+      return String(str || "")
+        .trim()
+        .toLowerCase()
+        .split(/\s+/)
+        .map((word, idx) => {
+          // Tangani kata dengan garis miring atau tanda kurung, misal: DADAR/CEPLOK -> Dadar/Ceplok
+          return word
+            .split(/([\/\(\)\+])/)
+            .map(part => {
+              if (!part || /^[\/\(\)\+]$/.test(part)) return part;
+              const upper = part.toUpperCase();
+              if (upperAcronyms.has(upper)) return upper;
+              if (idx > 0 && lowerWords.has(part)) return part;
+              return part.charAt(0).toUpperCase() + part.slice(1);
+            })
+            .join("");
+        })
+        .join(" ");
+    }
+
+    // Pilih ikon ilustrasi tematik berdasarkan kata kunci nama menu & kategori tenant
+    function getMenuVisualMeta(menuName, kategori = "") {
+      const text = `${menuName} ${kategori}`.toLowerCase();
+
+      if (/kopi|espresso|americano|latte|cappucino|cappuccino|machiato|aren|doppio/.test(text)) {
+        return { icon: "☕", bg: "bg-amber-100 text-amber-900" };
+      }
+      if (/matcha|green tea|greentea/.test(text)) {
+        return { icon: "🍵", bg: "bg-emerald-100 text-emerald-900" };
+      }
+      if (/es lilin/.test(text)) {
+        return { icon: "🍡", bg: "bg-pink-100 text-pink-900" };
+      }
+      if (/es |jus|alpukat|mangga|jeruk|strawberry|buah naga|teler|campur|sop buah|lemon|lychee|thai tea|teh|milk tea|tarik|aqua|minerale|sosro|pucuk|ice|minuman|rempah|kencur|kunyit|temulawak|jahe|galihan|seruni/.test(text)) {
+        return { icon: "🥤", bg: "bg-sky-100 text-sky-900" };
+      }
+      if (/ramen|udon|mie|yamin|jebew|jablay|spaghetti/.test(text)) {
+        return { icon: "🍜", bg: "bg-orange-100 text-orange-900" };
+      }
+      if (/dimsum|mentai|gyoza|siomay|batagor|pempek|kapal selam|lenjer|tekwan|lenggang|ngohiong|cireng|risoles|kroket|sempol|tahu baso/.test(text)) {
+        return { icon: "🥟", bg: "bg-amber-100 text-amber-800" };
+      }
+      if (/steak|beef|sirloin|tenderloin|gyudon|saikoro|bulgogi|grill|shabu|empal|rawon|bistik|lidah|buntut|iga|paru|babat/.test(text)) {
+        return { icon: "🥩", bg: "bg-rose-100 text-rose-900" };
+      }
+      if (/cumi|udang|ikan|nila|dori|kakap|tongkol|tenggiri/.test(text)) {
+        return { icon: "🦑", bg: "bg-cyan-100 text-cyan-900" };
+      }
+      if (/bebek/.test(text)) {
+        return { icon: "🍗", bg: "bg-orange-100 text-orange-900" };
+      }
+      if (/ayam|chicken|katsu|wings|oyakodon|ceker/.test(text)) {
+        return { icon: "🍗", bg: "bg-amber-100 text-amber-900" };
+      }
+      if (/baso|bakso|seblak|sop|soto|pindang|zuppa/.test(text)) {
+        return { icon: "🍲", bg: "bg-red-100 text-red-900" };
+      }
+      if (/burger|french fries|sausage|saussage/.test(text)) {
+        return { icon: "🍔", bg: "bg-yellow-100 text-yellow-900" };
+      }
+      if (/nasi|bento|rice bowl|timbel/.test(text)) {
+        return { icon: "🍱", bg: "bg-orange-100 text-orange-900" };
+      }
+      return { icon: "🍴", bg: "bg-stone-100 text-stone-700" };
+    }
+
+    // Deteksi sub-kategori otomatis di dalam 1 tenant agar menu panjang terkelompok rapi
+    function detectSubGroup(menuName) {
+      const m = menuName.toLowerCase();
+      if (/paket|komplit|bento|rice bowl|timbel/.test(m)) return "Paket & Nasi";
+      if (/botol|250\s*ml|330\s*ml|350\s*ml|450\s*ml|600\s*ml/.test(m)) return "Kemasan Botol";
+      if (/mentai/.test(m)) return "Varian Mentai";
+      if (/kukus/.test(m)) return "Kukus";
+      if (/goreng|bakar/.test(m)) return "Goreng & Bakar";
+      if (/ramen|udon|mie|yamin|seblak/.test(m)) return "Mie & Kuah";
+      if (/steak|grill|shabu/.test(m)) return "Steak & Grill";
+      if (/kopi|espresso|americano|latte|cappucino|aren/.test(m)) return "Kopi";
+      if (/matcha|coklat|chocolate|red velvet|taro|pistachio/.test(m)) return "Non-Kopi & Creamy";
+      if (/cheesy|cream/.test(m)) return "Cream Cheesy";
+      return "Menu Lainnya";
+    }
+
     function formatRupiah(nominal) {
       const num = Number(nominal);
       if (!num || isNaN(num)) return "Tanya Kasir";
       return "Rp " + num.toLocaleString("id-ID");
     }
 
-    // Mencegah karakter HTML berbahaya
     function escapeHtml(text) {
       return String(text || "")
         .replace(/&/g, "&amp;")
@@ -404,7 +593,6 @@
         .replace(/"/g, "&quot;");
     }
 
-    // Ambil inisial 1 huruf untuk kotak hitam-emas
     function getInitial(name) {
       const clean = String(name || "").trim();
       return clean ? clean.charAt(0).toUpperCase() : "T";
@@ -422,13 +610,16 @@
       if (activeOverlayType === "menu") {
         hideTenantModalDOM();
         activeOverlayType = null;
+      } else if (activeOverlayType === "notes") {
+        hideNotesModalDOM();
+        activeOverlayType = null;
       } else if (activeOverlayType === "welcome") {
         hideWelcomeModalDOM();
         activeOverlayType = null;
       }
     });
 
-    // --- WELCOME POPUP LOGIC ---
+    // --- WELCOME POPUP ---
     function showWelcomeModalIfFirstVisit() {
       const alreadySeen = sessionStorage.getItem("yogya_rasa_welcomed");
       if (alreadySeen) return;
@@ -464,24 +655,20 @@
 
     function closeWelcomeModal() {
       if (activeOverlayType === "welcome") {
-        history.back(); // Memicu popstate -> hideWelcomeModalDOM()
+        history.back();
       } else {
         hideWelcomeModalDOM();
       }
     }
 
     function startWithCategory(cat) {
-      if (categories.includes(cat)) {
-        activeCategory = cat;
-      } else {
-        activeCategory = "Semua";
-      }
+      activeCategory = categories.includes(cat) ? cat : "Semua";
       renderCategories();
-      renderTenants();
+      renderMainView();
       closeWelcomeModal();
     }
 
-    // --- FILTER KATEGORI & HARGA HEMAT ---
+    // --- FILTER KATEGORI, PENCARIAN & BUDGET ---
     function renderCategories() {
       const container = document.getElementById("categoryPills");
       container.innerHTML = categories.map(cat => {
@@ -505,7 +692,12 @@
     function selectCategory(cat) {
       activeCategory = cat;
       renderCategories();
-      renderTenants();
+      renderMainView();
+    }
+
+    function setSearchViewMode(mode) {
+      searchViewMode = mode;
+      renderMainView();
     }
 
     function toggleBudgetFilter() {
@@ -521,7 +713,7 @@
         notice.classList.add("hidden");
       }
 
-      renderTenants();
+      renderMainView();
     }
 
     function resetFilters() {
@@ -533,32 +725,214 @@
       document.getElementById("budgetFilterBtn").className = "px-3 py-1.5 rounded-full text-xs font-bold border whitespace-nowrap transition active:scale-95 bg-white text-emerald-800 border-emerald-300/90 hover:bg-emerald-50 flex items-center gap-1 shrink-0";
       document.getElementById("activeFilterNotice").classList.add("hidden");
       renderCategories();
-      renderTenants();
+      renderMainView();
     }
 
-    // Hitung rentang harga terendah pada satu tenant
     function getMinPrice(menus) {
       const validPrices = (menus || []).map(m => Number(m.harga)).filter(p => p > 0);
       if (validPrices.length === 0) return null;
       return Math.min(...validPrices);
     }
 
-    // Render daftar kartu tenant
-    function renderTenants() {
+    // --- CATATAN PESANAN (WISHLIST) LOGIC ---
+    function getNoteQty(tenantId, menuName) {
+      const key = `${tenantId}::${menuName}`;
+      const found = savedNotes.find(item => item.key === key);
+      return found ? found.qty : 0;
+    }
+
+    function updateNoteQty(tenantId, menuName, delta) {
+      const tenant = allTenants.find(t => t.id === tenantId);
+      if (!tenant) return;
+      const menuObj = (tenant.menus || []).find(m => m.nama_menu === menuName);
+      if (!menuObj) return;
+
+      const key = `${tenantId}::${menuName}`;
+      const idx = savedNotes.findIndex(item => item.key === key);
+
+      if (idx === -1 && delta > 0) {
+        savedNotes.push({
+          key,
+          tenantId,
+          tenantName: tenant.nama_tenant,
+          nama_menu: menuObj.nama_menu,
+          harga: Number(menuObj.harga) || 0,
+          qty: 1
+        });
+      } else if (idx !== -1) {
+        savedNotes[idx].qty += delta;
+        if (savedNotes[idx].qty <= 0) {
+          savedNotes.splice(idx, 1);
+        }
+      }
+
+      updateNotesFloatingBar();
+      if (activeModalTenant) {
+        renderModalMenus(document.getElementById("modalMenuSearch").value);
+      }
+      if (searchQuery.trim() && searchViewMode === "menus") {
+        renderMainView();
+      }
+      if (activeOverlayType === "notes") {
+        renderNotesModalContent();
+      }
+    }
+
+    function clearAllNotes() {
+      savedNotes = [];
+      updateNotesFloatingBar();
+      if (activeModalTenant) {
+        renderModalMenus(document.getElementById("modalMenuSearch").value);
+      }
+      if (searchQuery.trim() && searchViewMode === "menus") {
+        renderMainView();
+      }
+      closeNotesModal();
+    }
+
+    function updateNotesFloatingBar() {
+      const bar = document.getElementById("notesFloatingBar");
+      const totalItems = savedNotes.reduce((sum, item) => sum + item.qty, 0);
+
+      if (totalItems === 0) {
+        bar.classList.add("hidden");
+        return;
+      }
+
+      const totalPrice = savedNotes.reduce((sum, item) => sum + item.harga * item.qty, 0);
+      const uniqueTenants = new Set(savedNotes.map(item => item.tenantId)).size;
+
+      document.getElementById("notesCountBadge").textContent = totalItems;
+      document.getElementById("notesTenantSummary").textContent = `${uniqueTenants} tenant dipilih • Ketuk untuk rincian`;
+      document.getElementById("notesTotalPrice").textContent = formatRupiah(totalPrice);
+      bar.classList.remove("hidden");
+    }
+
+    function openNotesModal() {
+      if (savedNotes.length === 0) return;
+      renderNotesModalContent();
+
+      const modal = document.getElementById("notesModal");
+      const backdrop = document.getElementById("notesBackdrop");
+      const panel = document.getElementById("notesPanel");
+
+      modal.classList.remove("hidden");
+      document.body.classList.add("overflow-hidden");
+      pushOverlayHistory("notes");
+
+      requestAnimationFrame(() => {
+        backdrop.classList.remove("opacity-0");
+        panel.classList.remove("translate-y-full");
+      });
+    }
+
+    function hideNotesModalDOM() {
+      const modal = document.getElementById("notesModal");
+      const backdrop = document.getElementById("notesBackdrop");
+      const panel = document.getElementById("notesPanel");
+
+      backdrop.classList.add("opacity-0");
+      panel.classList.add("translate-y-full");
+
+      setTimeout(() => {
+        modal.classList.add("hidden");
+        document.body.classList.remove("overflow-hidden");
+      }, 260);
+    }
+
+    function closeNotesModal() {
+      if (activeOverlayType === "notes") {
+        history.back();
+      } else {
+        hideNotesModalDOM();
+      }
+    }
+
+    function renderNotesModalContent() {
+      const container = document.getElementById("notesListContainer");
+      const totalEl = document.getElementById("notesModalTotal");
+
+      if (savedNotes.length === 0) {
+        totalEl.textContent = "Rp 0";
+        container.innerHTML = `<p class="text-xs text-stone-400 text-center py-8">Belum ada menu yang dicatat.</p>`;
+        return;
+      }
+
+      // Kelompokkan berdasarkan tenant
+      const grouped = {};
+      savedNotes.forEach(item => {
+        if (!grouped[item.tenantId]) {
+          grouped[item.tenantId] = { tenantName: item.tenantName, items: [] };
+        }
+        grouped[item.tenantId].items.push(item);
+      });
+
+      const grandTotal = savedNotes.reduce((sum, i) => sum + i.harga * i.qty, 0);
+      totalEl.textContent = formatRupiah(grandTotal);
+
+      container.innerHTML = Object.entries(grouped).map(([tenantId, group]) => {
+        const subTotal = group.items.reduce((s, i) => s + i.harga * i.qty, 0);
+        const rowsHtml = group.items.map(item => {
+          const safeTenantId = escapeHtml(tenantId).replace(/'/g, "\\'");
+          const safeMenuRaw = escapeHtml(item.nama_menu).replace(/'/g, "\\'");
+          return `
+            <div class="py-2.5 flex items-center justify-between gap-2">
+              <div class="min-w-0 flex-1">
+                <p class="text-xs font-bold text-stone-800 leading-snug">${escapeHtml(formatTitleCase(item.nama_menu))}</p>
+                <p class="text-[11px] text-stone-500 mt-0.5">${escapeHtml(formatRupiah(item.harga))} × ${item.qty}</p>
+              </div>
+              <div class="flex items-center gap-1.5 shrink-0">
+                <button type="button" onclick="updateNoteQty('${safeTenantId}', '${safeMenuRaw}', -1)" class="w-6 h-6 rounded-lg bg-stone-100 hover:bg-stone-200 font-bold text-xs text-stone-700">-</button>
+                <span class="w-5 text-center text-xs font-extrabold">${item.qty}</span>
+                <button type="button" onclick="updateNoteQty('${safeTenantId}', '${safeMenuRaw}', 1)" class="w-6 h-6 rounded-lg bg-orange-600 text-white font-bold text-xs">+</button>
+              </div>
+            </div>
+          `;
+        }).join("");
+
+        return `
+          <div class="bg-white border border-stone-200/90 rounded-2xl p-3.5 shadow-2xs">
+            <div class="flex items-center justify-between pb-2 border-b border-stone-100">
+              <span class="text-xs font-extrabold text-zinc-900">🏪 ${escapeHtml(group.tenantName)}</span>
+              <span class="text-[11px] font-bold text-orange-700">${escapeHtml(formatRupiah(subTotal))}</span>
+            </div>
+            <div class="divide-y divide-stone-100">${rowsHtml}</div>
+          </div>
+        `;
+      }).join("");
+    }
+
+    // --- RENDER HALAMAN UTAMA (KARTU TENANT / HASIL MENU LANGSUNG) ---
+    function renderMainView() {
       const grid = document.getElementById("tenantGrid");
       const emptyState = document.getElementById("emptyState");
       const badge = document.getElementById("tenantBadge");
+      const searchModeBar = document.getElementById("searchModeBar");
       const q = searchQuery.toLowerCase().trim();
 
-      const filtered = allTenants.filter(tenant => {
-        const matchCategory = activeCategory === "Semua" || tenant.kategori === activeCategory;
-        if (!matchCategory) return false;
+      // Filter tenant sesuai kategori & budget
+      const categoryTenants = allTenants.filter(t => activeCategory === "Semua" || t.kategori === activeCategory);
 
+      // Kumpulkan semua menu yang cocok jika ada pencarian
+      const matchedMenuItems = [];
+      if (q) {
+        categoryTenants.forEach(tenant => {
+          (tenant.menus || []).forEach(m => {
+            const nameMatch = m.nama_menu.toLowerCase().includes(q) || tenant.nama_tenant.toLowerCase().includes(q);
+            const priceOk = !onlyBudgetUnder20k || (Number(m.harga) > 0 && Number(m.harga) < 20000);
+            if (nameMatch && priceOk) {
+              matchedMenuItems.push({ tenant, menu: m });
+            }
+          });
+        });
+      }
+
+      // Filter daftar kartu tenant
+      const filteredTenants = categoryTenants.filter(tenant => {
         if (onlyBudgetUnder20k) {
           const hasAffordable = (tenant.menus || []).some(m => Number(m.harga) > 0 && Number(m.harga) < 20000);
           if (!hasAffordable) return false;
         }
-
         if (!q) return true;
 
         const matchName = tenant.nama_tenant.toLowerCase().includes(q);
@@ -571,35 +945,89 @@
         return matchName || matchDesc || matchMenu;
       });
 
-      badge.textContent = `${filtered.length} Tenant`;
+      badge.textContent = `${filteredTenants.length} Tenant`;
 
-      if (filtered.length === 0) {
+      // Tampilkan switcher mode saat user mengetik pencarian
+      if (q) {
+        searchModeBar.classList.remove("hidden");
+        document.getElementById("matchedMenuCount").textContent = matchedMenuItems.length;
+        document.getElementById("matchedTenantCount").textContent = filteredTenants.length;
+
+        const activeTabClass = "flex-1 py-1.5 rounded-lg text-xs font-extrabold transition bg-zinc-900 text-amber-300 shadow-2xs";
+        const inactiveTabClass = "flex-1 py-1.5 rounded-lg text-xs font-bold transition text-stone-600 hover:bg-stone-200/60";
+        document.getElementById("modeMenuBtn").className = searchViewMode === "menus" ? activeTabClass : inactiveTabClass;
+        document.getElementById("modeTenantBtn").className = searchViewMode === "tenants" ? activeTabClass : inactiveTabClass;
+      } else {
+        searchModeBar.classList.add("hidden");
+      }
+
+      // MODE 1: HASIL PENCARIAN LANGSUNG PER ITEM MENU (COCOK UNTUK YANG MAGER KELILING)
+      if (q && searchViewMode === "menus") {
+        if (matchedMenuItems.length === 0) {
+          grid.innerHTML = "";
+          emptyState.classList.remove("hidden");
+          return;
+        }
+        emptyState.classList.add("hidden");
+
+        grid.innerHTML = matchedMenuItems.slice(0, 60).map(({ tenant, menu }) => {
+          const visual = getMenuVisualMeta(menu.nama_menu, tenant.kategori);
+          const formattedName = formatTitleCase(menu.nama_menu);
+          const qty = getNoteQty(tenant.id, menu.nama_menu);
+          const safeTenantId = escapeHtml(tenant.id).replace(/'/g, "\\'");
+          const safeMenuRaw = escapeHtml(menu.nama_menu).replace(/'/g, "\\'");
+
+          const actionControl = qty > 0
+            ? `<div class="inline-flex items-center gap-1.5 bg-orange-50 border border-orange-300 rounded-lg px-1.5 py-0.5">
+                 <button type="button" onclick="updateNoteQty('${safeTenantId}', '${safeMenuRaw}', -1)" class="w-5 h-5 rounded bg-white text-orange-700 font-extrabold text-xs">-</button>
+                 <span class="text-xs font-extrabold text-orange-900 px-1">${qty}</span>
+                 <button type="button" onclick="updateNoteQty('${safeTenantId}', '${safeMenuRaw}', 1)" class="w-5 h-5 rounded bg-orange-600 text-white font-extrabold text-xs">+</button>
+               </div>`
+            : `<button type="button" onclick="updateNoteQty('${safeTenantId}', '${safeMenuRaw}', 1)" class="px-2.5 py-1 rounded-lg bg-stone-100 hover:bg-orange-600 text-stone-700 hover:text-white text-[11px] font-bold transition">+ Catat</button>`;
+
+          return `
+            <div class="bg-white/95 border border-stone-200/90 rounded-2xl p-3.5 shadow-sm flex items-center gap-3">
+              <div class="w-11 h-11 rounded-xl ${visual.bg} flex items-center justify-center text-lg shrink-0">
+                ${visual.icon}
+              </div>
+              <div class="min-w-0 flex-1">
+                <button
+                  type="button"
+                  onclick="openTenantModal('${safeTenantId}')"
+                  class="inline-flex items-center gap-1 text-[10px] font-extrabold text-orange-700 bg-orange-50 border border-orange-200/80 px-2 py-0.5 rounded-md mb-1 hover:bg-orange-100"
+                >
+                  <span>🏪 ${escapeHtml(tenant.nama_tenant)}</span>
+                  <span>›</span>
+                </button>
+                <p class="text-sm font-bold text-zinc-900 leading-snug">${escapeHtml(formattedName)}</p>
+                <div class="mt-2 flex items-center justify-between gap-2">
+                  <span class="text-sm font-extrabold text-zinc-900 tabular-nums">${escapeHtml(formatRupiah(menu.harga))}</span>
+                  ${actionControl}
+                </div>
+              </div>
+            </div>
+          `;
+        }).join("");
+        return;
+      }
+
+      // MODE 2: DAFTAR KARTU TENANT + PRATINJAU 2 MENU UNGGULAN
+      if (filteredTenants.length === 0) {
         grid.innerHTML = "";
         emptyState.classList.remove("hidden");
         return;
       }
 
       emptyState.classList.add("hidden");
-      grid.innerHTML = filtered.map(tenant => {
+      grid.innerHTML = filteredTenants.map(tenant => {
         const minPrice = getMinPrice(tenant.menus);
         const affordableCount = (tenant.menus || []).filter(m => Number(m.harga) > 0 && Number(m.harga) < 20000).length;
 
-        let matchedHighlight = "";
-        if (q) {
-          const matchedMenus = (tenant.menus || [])
-            .filter(m => m.nama_menu.toLowerCase().includes(q))
-            .slice(0, 2)
-            .map(m => m.nama_menu);
-
-          if (matchedMenus.length > 0) {
-            matchedHighlight = `
-              <div class="mt-2 inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg bg-orange-50 border border-orange-200/70 text-[11px] font-semibold text-orange-800 max-w-full">
-                <span class="shrink-0">Cocok:</span>
-                <span class="truncate">${escapeHtml(matchedMenus.join(", "))}</span>
-              </div>
-            `;
-          }
-        }
+        // Ambil 2 contoh menu pertama sebagai pratinjau visual di kartu depan
+        const previewItems = (tenant.menus || [])
+          .slice(0, 2)
+          .map(m => formatTitleCase(m.nama_menu))
+          .join(" • ");
 
         const pricePill = minPrice
           ? `<span class="text-[11px] font-semibold text-stone-500">Mulai <strong class="text-stone-800">${escapeHtml(formatRupiah(minPrice))}</strong></span>`
@@ -617,12 +1045,10 @@
             class="group bg-white/95 hover:bg-white border border-stone-200/90 hover:border-orange-400 rounded-2xl p-4 shadow-md hover:shadow-lg transition-all duration-150 cursor-pointer active:scale-[0.985]"
           >
             <div class="flex items-start gap-3.5">
-              <!-- Kotak Inisial Hitam-Emas -->
               <div class="w-12 h-12 rounded-xl bg-zinc-900 text-amber-400 font-extrabold text-lg flex items-center justify-center shadow-xs shrink-0 group-hover:bg-orange-600 group-hover:text-white transition-colors">
                 ${escapeHtml(getInitial(tenant.nama_tenant))}
               </div>
 
-              <!-- Info Tenant -->
               <div class="min-w-0 flex-1">
                 <div class="flex items-center justify-between gap-2">
                   <h2 class="text-[15px] font-extrabold text-zinc-900 truncate">${escapeHtml(tenant.nama_tenant)}</h2>
@@ -635,7 +1061,7 @@
                   ${escapeHtml(tenant.deskripsi || `${tenant.total_menu} pilihan menu tersedia`)}
                 </p>
 
-                ${matchedHighlight}
+                ${previewItems ? `<p class="text-[11px] text-stone-400 mt-1.5 line-clamp-1 italic">Contoh: ${escapeHtml(previewItems)}</p>` : ""}
 
                 <div class="mt-3 flex items-center justify-between gap-2 flex-wrap">
                   <span class="inline-flex items-center gap-1 px-3 py-1 rounded-full bg-orange-50 group-hover:bg-orange-600 text-orange-600 group-hover:text-white border border-orange-200 group-hover:border-orange-600 text-xs font-bold transition-colors">
@@ -653,7 +1079,46 @@
       }).join("");
     }
 
-    // --- KONTROL SORT & FILTER HARGA DI DALAM MODAL ---
+    // --- KONTROL POP-UP DETAIL TENANT ---
+    function renderModalSubGroups() {
+      const wrap = document.getElementById("modalSubGroupWrap");
+      if (!activeModalTenant) return;
+
+      const groups = (activeModalTenant.menus || []).map(m => detectSubGroup(m.nama_menu));
+      const uniqueGroups = [...new Set(groups)];
+
+      // Munculkan pil sub-kategori hanya jika ada minimal 2 kelompok berbeda & total menu >= 8
+      if (uniqueGroups.length < 2 || (activeModalTenant.menus || []).length < 8) {
+        wrap.classList.add("hidden");
+        wrap.innerHTML = "";
+        return;
+      }
+
+      const tabList = ["Semua", ...uniqueGroups];
+      wrap.classList.remove("hidden");
+      wrap.innerHTML = tabList.map(grp => {
+        const isSelected = grp === activeModalSubGroup;
+        const cls = isSelected
+          ? "bg-orange-600 text-white border-orange-600 shadow-2xs"
+          : "bg-white text-stone-700 border-stone-200 hover:bg-orange-50";
+        return `
+          <button
+            type="button"
+            onclick="selectModalSubGroup('${escapeHtml(grp).replace(/'/g, "\\'")}')"
+            class="px-2.5 py-1 rounded-full text-[11px] font-bold border whitespace-nowrap transition shrink-0 ${cls}"
+          >
+            ${escapeHtml(grp)}
+          </button>
+        `;
+      }).join("");
+    }
+
+    function selectModalSubGroup(grp) {
+      activeModalSubGroup = grp;
+      renderModalSubGroups();
+      renderModalMenus(document.getElementById("modalMenuSearch").value);
+    }
+
     function updateModalControlsUI() {
       document.querySelectorAll(".modal-sort-btn").forEach(btn => {
         const isSelected = btn.getAttribute("data-sort") === modalSortOrder;
@@ -680,7 +1145,6 @@
       renderModalMenus(document.getElementById("modalMenuSearch").value);
     }
 
-    // Render daftar item menu di dalam Bottom Sheet
     function renderModalMenus(filterText = "") {
       if (!activeModalTenant) return;
       const listEl = document.getElementById("modalMenuList");
@@ -688,6 +1152,10 @@
       const localQ = filterText.toLowerCase().trim();
 
       let items = [...(activeModalTenant.menus || [])];
+
+      if (activeModalSubGroup !== "Semua") {
+        items = items.filter(item => detectSubGroup(item.nama_menu) === activeModalSubGroup);
+      }
 
       if (localQ) {
         items = items.filter(item => item.nama_menu.toLowerCase().includes(localQ));
@@ -712,37 +1180,66 @@
         return;
       }
 
-      listEl.innerHTML = items.map(item => {
+      const safeTenantId = escapeHtml(activeModalTenant.id).replace(/'/g, "\\'");
+
+      listEl.innerHTML = items.map((item, idx) => {
         const priceNum = Number(item.harga) || 0;
+        const formattedName = formatTitleCase(item.nama_menu);
+        const visual = getMenuVisualMeta(item.nama_menu, activeModalTenant.kategori);
         const isMatch = (globalQ && item.nama_menu.toLowerCase().includes(globalQ)) ||
                         (localQ && item.nama_menu.toLowerCase().includes(localQ));
         const isAffordable = priceNum > 0 && priceNum < 20000;
+        const isTopPick = idx < 2 && modalSortOrder === "default" && activeModalSubGroup === "Semua" && !localQ && !modalOnlyUnder20k;
+
+        const qty = getNoteQty(activeModalTenant.id, item.nama_menu);
+        const safeMenuRaw = escapeHtml(item.nama_menu).replace(/'/g, "\\'");
+
+        const noteBtnHtml = qty > 0
+          ? `<div class="inline-flex items-center gap-1 bg-orange-100 border border-orange-300 rounded-lg px-1.5 py-0.5">
+               <button type="button" onclick="updateNoteQty('${safeTenantId}', '${safeMenuRaw}', -1)" class="w-5 h-5 rounded bg-white text-orange-700 font-extrabold text-xs">-</button>
+               <span class="text-xs font-extrabold text-orange-950 px-1">${qty}</span>
+               <button type="button" onclick="updateNoteQty('${safeTenantId}', '${safeMenuRaw}', 1)" class="w-5 h-5 rounded bg-orange-600 text-white font-extrabold text-xs">+</button>
+             </div>`
+          : `<button type="button" onclick="updateNoteQty('${safeTenantId}', '${safeMenuRaw}', 1)" class="px-2.5 py-1 rounded-lg bg-white hover:bg-orange-600 text-stone-600 hover:text-white border border-stone-200 hover:border-orange-600 text-[11px] font-bold transition">+ Catat</button>`;
 
         return `
-          <div class="py-3.5 flex items-center justify-between gap-3 ${isMatch ? 'bg-orange-50/80 -mx-3 px-3 rounded-xl' : ''}">
-            <div class="min-w-0 flex-1">
-              <p class="text-sm font-semibold text-stone-800 leading-snug">${escapeHtml(item.nama_menu)}</p>
-              ${isAffordable ? '<span class="inline-block mt-1 text-[10px] font-bold text-emerald-700 bg-emerald-50 border border-emerald-200/80 px-1.5 py-0.5 rounded">Hemat &lt; 20rb</span>' : ''}
+          <div class="rounded-2xl p-3 border transition ${isMatch ? 'bg-orange-50/90 border-orange-300' : 'bg-[#FAF6F1]/90 border-stone-200/75'} flex items-start gap-3">
+            <!-- Avatar Ikon Makanan Tematik -->
+            <div class="w-10 h-10 rounded-xl ${visual.bg} flex items-center justify-center text-base shrink-0 mt-0.5 shadow-2xs">
+              ${visual.icon}
             </div>
-            <span class="text-sm font-extrabold text-zinc-900 shrink-0 tabular-nums">
-              ${escapeHtml(formatRupiah(item.harga))}
-            </span>
+
+            <!-- Nama Menu & Badge -->
+            <div class="min-w-0 flex-1">
+              <div class="flex items-center gap-1.5 flex-wrap mb-0.5">
+                <span class="text-[10px] font-bold text-stone-400">#${String(item.no || idx + 1).padStart(2, "0")}</span>
+                ${isTopPick ? '<span class="text-[10px] font-extrabold text-amber-800 bg-amber-200/80 px-1.5 py-0.2 rounded">⭐ Favorit</span>' : ''}
+                ${isAffordable ? '<span class="text-[10px] font-bold text-emerald-700 bg-emerald-100/80 px-1.5 py-0.2 rounded">Hemat &lt; 20rb</span>' : ''}
+              </div>
+
+              <p class="text-[13.5px] font-bold text-zinc-900 leading-snug">${escapeHtml(formattedName)}</p>
+
+              <div class="mt-2 flex items-center justify-between gap-2">
+                <span class="inline-block px-2.5 py-0.5 rounded-lg bg-white border border-stone-200/90 text-xs font-extrabold text-zinc-900 tabular-nums">
+                  ${escapeHtml(formatRupiah(item.harga))}
+                </span>
+                ${noteBtnHtml}
+              </div>
+            </div>
           </div>
         `;
       }).join("");
     }
 
-    // Buka Bottom Sheet Modal
-    function openTenantModal(tenantId) {
-      const tenant = allTenants.find(t => t.id === tenantId);
-      if (!tenant) return;
-
+    function populateModalTenantData(tenant) {
       activeModalTenant = tenant;
       modalSortOrder = "default";
+      activeModalSubGroup = "Semua";
       modalOnlyUnder20k = onlyBudgetUnder20k;
 
       document.getElementById("modalInitialBox").textContent = getInitial(tenant.nama_tenant);
       document.getElementById("modalTenantName").textContent = tenant.nama_tenant;
+      document.getElementById("modalTenantCategory").textContent = tenant.kategori || "Kuliner";
       document.getElementById("modalTenantMeta").textContent =
         `${tenant.deskripsi ? tenant.deskripsi + " • " : ""}${tenant.total_menu} menu`;
 
@@ -755,8 +1252,17 @@
         modalSearchWrap.classList.add("hidden");
       }
 
+      renderModalSubGroups();
       updateModalControlsUI();
       renderModalMenus("");
+      document.getElementById("modalMenuList").scrollTop = 0;
+    }
+
+    function openTenantModal(tenantId) {
+      const tenant = allTenants.find(t => t.id === tenantId);
+      if (!tenant) return;
+
+      populateModalTenantData(tenant);
 
       const modal = document.getElementById("menuModal");
       const backdrop = document.getElementById("modalBackdrop");
@@ -772,7 +1278,16 @@
       });
     }
 
-    // Tutup DOM Bottom Sheet Modal
+    // Navigasi Prev / Next antar tenant langsung dari dalam pop-up
+    function navigateTenant(step) {
+      if (!activeModalTenant || allTenants.length === 0) return;
+      const pool = allTenants.filter(t => activeCategory === "Semua" || t.kategori === activeCategory);
+      const list = pool.length > 0 ? pool : allTenants;
+      const currentIdx = list.findIndex(t => t.id === activeModalTenant.id);
+      const nextIdx = (currentIdx + step + list.length) % list.length;
+      populateModalTenantData(list[nextIdx]);
+    }
+
     function hideTenantModalDOM() {
       const modal = document.getElementById("menuModal");
       const backdrop = document.getElementById("modalBackdrop");
@@ -788,16 +1303,15 @@
       }, 260);
     }
 
-    // Tutup Bottom Sheet Modal (via tombol / klik luar)
     function closeTenantModal() {
       if (activeOverlayType === "menu") {
-        history.back(); // Memicu popstate -> hideTenantModalDOM()
+        history.back();
       } else {
         hideTenantModalDOM();
       }
     }
 
-    // Fetch data dari backend Express (/api/menu)
+    // --- FETCH DATA API ---
     async function loadMenuData() {
       const loadingState = document.getElementById("loadingState");
       const errorState = document.getElementById("errorState");
@@ -820,7 +1334,7 @@
 
         loadingState.classList.add("hidden");
         renderCategories();
-        renderTenants();
+        renderMainView();
       } catch (err) {
         loadingState.classList.add("hidden");
         document.getElementById("errorDetail").textContent = err.message;
@@ -828,21 +1342,21 @@
       }
     }
 
-    // Event Listeners
+    // --- EVENT LISTENERS ---
     const searchInput = document.getElementById("searchInput");
     const clearSearchBtn = document.getElementById("clearSearchBtn");
 
     searchInput.addEventListener("input", (e) => {
       searchQuery = e.target.value;
       clearSearchBtn.classList.toggle("hidden", !searchQuery);
-      renderTenants();
+      renderMainView();
     });
 
     clearSearchBtn.addEventListener("click", () => {
       searchQuery = "";
       searchInput.value = "";
       clearSearchBtn.classList.add("hidden");
-      renderTenants();
+      renderMainView();
     });
 
     document.getElementById("modalMenuSearch").addEventListener("input", (e) => {
@@ -853,18 +1367,16 @@
     document.getElementById("modalBackdrop").addEventListener("click", closeTenantModal);
     document.getElementById("closeModalBtn").addEventListener("click", closeTenantModal);
     document.getElementById("bottomCloseBtn").addEventListener("click", closeTenantModal);
+    document.getElementById("notesBackdrop").addEventListener("click", closeNotesModal);
 
     document.addEventListener("keydown", (e) => {
       if (e.key === "Escape") {
-        if (activeOverlayType === "welcome") {
-          closeWelcomeModal();
-        } else if (activeOverlayType === "menu") {
-          closeTenantModal();
-        }
+        if (activeOverlayType === "welcome") closeWelcomeModal();
+        else if (activeOverlayType === "menu") closeTenantModal();
+        else if (activeOverlayType === "notes") closeNotesModal();
       }
     });
 
-    // Jalankan saat halaman dibuka
     showWelcomeModalIfFirstVisit();
     loadMenuData();
   </script>
