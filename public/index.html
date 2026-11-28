@@ -37,28 +37,28 @@
     }
   </style>
 </head>
-<body class="text-stone-900 antialiased selection:bg-orange-200">
+<body class="text-stone-800 antialiased selection:bg-orange-100">
 
   <!-- Wrapper Mobile-First di atas Latar Kayu -->
-  <div class="max-w-md mx-auto min-h-screen flex flex-col relative shadow-2xl bg-amber-950/10 backdrop-blur-[1px]">
+  <div class="max-w-md mx-auto min-h-screen flex flex-col relative shadow-2xl bg-stone-950/10 backdrop-blur-[1px]">
 
     <!-- Sticky Header -->
-    <header class="sticky top-0 z-20 bg-[#FAF6F1]/95 backdrop-blur-md border-b border-stone-200/80 px-4 pt-4 pb-3 shadow-sm">
+    <header class="sticky top-0 z-20 bg-[#FAF7F3]/95 backdrop-blur-md border-b border-stone-200/80 px-4 pt-4 pb-3 shadow-xs">
       <!-- Baris Judul & Logo -->
       <div class="flex items-center justify-between gap-3 mb-3">
         <div class="flex items-center gap-2.5 min-w-0">
           <img
             src="/assets/logo-yogya-rasa.PNG"
             alt="Logo Yogya Rasa"
-            class="w-10 h-10 rounded-xl object-contain bg-white p-1 border border-stone-200/80 shadow-xs shrink-0"
+            class="w-9 h-9 rounded-xl object-contain bg-white p-1 border border-stone-200/80 shrink-0"
           />
           <div class="min-w-0">
-            <h1 class="text-base font-extrabold tracking-tight text-zinc-900 leading-none truncate">YOGYA RASA</h1>
+            <h1 class="text-sm font-extrabold tracking-tight text-zinc-900 leading-none truncate">YOGYA RASA</h1>
             <p class="text-[11px] font-medium text-stone-500 mt-1 truncate">Katalog Menu & Tenant Kuliner</p>
           </div>
         </div>
 
-        <span id="tenantBadge" class="text-[11px] font-bold bg-amber-100 text-amber-800 border border-amber-200/80 px-2.5 py-1 rounded-full shrink-0">
+        <span id="tenantBadge" class="text-[11px] font-semibold bg-stone-200/70 text-stone-700 px-2.5 py-1 rounded-full shrink-0">
           Memuat...
         </span>
       </div>
@@ -69,18 +69,18 @@
           type="text"
           id="searchInput"
           placeholder="Cari menu atau tenant (misal: ayam, dimsum, kopi)..."
-          class="w-full pl-4 pr-16 py-2.5 bg-white border border-stone-200 focus:border-orange-600 focus:ring-2 focus:ring-orange-500/20 rounded-xl text-sm text-stone-800 placeholder:text-stone-400 outline-none transition shadow-xs"
+          class="w-full pl-3.5 pr-14 py-2.5 bg-white border border-stone-200 focus:border-orange-500 focus:ring-2 focus:ring-orange-500/15 rounded-xl text-sm text-stone-800 placeholder:text-stone-400 outline-none transition"
         />
         <button
           id="clearSearchBtn"
           type="button"
           title="Hapus pencarian"
-          class="hidden absolute right-10 top-1/2 -translate-y-1/2 text-stone-400 hover:text-stone-700 p-1 text-xs font-bold"
+          class="hidden absolute right-9 top-1/2 -translate-y-1/2 text-stone-400 hover:text-stone-700 p-1 text-xs font-bold"
         >
           ✕
         </button>
-        <div class="w-7 h-7 rounded-lg bg-orange-600 text-white flex items-center justify-center absolute right-1.5 top-1/2 -translate-y-1/2 pointer-events-none">
-          <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24">
+        <div class="w-7 h-7 rounded-lg bg-stone-100 text-stone-500 flex items-center justify-center absolute right-1.5 top-1/2 -translate-y-1/2 pointer-events-none">
+          <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-width="2.2" viewBox="0 0 24 24">
             <path stroke-linecap="round" stroke-linejoin="round" d="M21 21l-4.35-4.35m0 0A7.5 7.5 0 103.5 10.5a7.5 7.5 0 0013.15 6.15z" />
           </svg>
         </div>
@@ -88,17 +88,17 @@
 
       <!-- Pill Filter Kategori + Filter Menu Hemat (< 20rb) -->
       <div class="flex items-center gap-2 overflow-x-auto no-scrollbar pt-3 pb-0.5">
-        <div id="categoryPills" class="flex items-center gap-2"></div>
+        <div id="categoryPills" class="flex items-center gap-1.5"></div>
 
-        <div class="h-4 w-[1px] bg-stone-300/80 shrink-0"></div>
+        <div class="h-4 w-[1px] bg-stone-300/70 shrink-0"></div>
 
         <button
           id="budgetFilterBtn"
           type="button"
           onclick="toggleBudgetFilter()"
-          class="px-3 py-1.5 rounded-full text-xs font-bold border whitespace-nowrap transition active:scale-95 bg-white text-emerald-800 border-emerald-300/90 hover:bg-emerald-50 flex items-center gap-1 shrink-0"
+          class="px-3 py-1.5 rounded-full text-xs font-semibold border whitespace-nowrap transition active:scale-95 bg-white text-stone-700 border-stone-200 hover:border-emerald-400 shrink-0"
         >
-          <span>Menu &lt; 20rb</span>
+          Menu &lt; 20rb
         </button>
       </div>
     </header>
@@ -106,28 +106,28 @@
     <!-- Konten Utama -->
     <main class="flex-1 px-4 py-4 pb-24">
       <!-- Banner Indikator Filter Hemat Aktif -->
-      <div id="activeFilterNotice" class="hidden mb-3 px-3.5 py-2 rounded-xl bg-emerald-900/90 text-emerald-50 backdrop-blur-xs text-xs font-medium flex items-center justify-between gap-2 shadow-sm">
-        <span>Menampilkan pilihan di bawah <strong>Rp 20.000</strong></span>
-        <button type="button" onclick="toggleBudgetFilter()" class="text-[11px] font-bold underline text-emerald-200 hover:text-white shrink-0">
+      <div id="activeFilterNotice" class="hidden mb-3 px-3.5 py-2 rounded-xl bg-white/95 border border-emerald-200 text-stone-700 text-xs flex items-center justify-between gap-2 shadow-xs">
+        <span>Menampilkan menu di bawah <strong class="text-emerald-700">Rp 20.000</strong></span>
+        <button type="button" onclick="toggleBudgetFilter()" class="text-[11px] font-bold text-stone-500 hover:text-stone-900 underline shrink-0">
           Matikan
         </button>
       </div>
 
-      <!-- Switcher Tampilan Saat Pencarian Aktif (Per Menu vs Per Tenant) -->
-      <div id="searchModeBar" class="hidden mb-3 bg-[#FAF6F1]/95 p-1 rounded-xl border border-stone-200/90 shadow-xs flex items-center gap-1">
+      <!-- Switcher Tampilan Saat Pencarian Aktif -->
+      <div id="searchModeBar" class="hidden mb-3 bg-[#FAF7F3] p-1 rounded-xl border border-stone-200/90 flex items-center gap-1">
         <button
           type="button"
           id="modeMenuBtn"
           onclick="setSearchViewMode('menus')"
-          class="flex-1 py-1.5 rounded-lg text-xs font-extrabold transition"
+          class="flex-1 py-1.5 rounded-lg text-xs font-bold transition"
         >
-          Daftar Menu Cocok (<span id="matchedMenuCount">0</span>)
+          Daftar Menu (<span id="matchedMenuCount">0</span>)
         </button>
         <button
           type="button"
           id="modeTenantBtn"
           onclick="setSearchViewMode('tenants')"
-          class="flex-1 py-1.5 rounded-lg text-xs font-extrabold transition"
+          class="flex-1 py-1.5 rounded-lg text-xs font-bold transition"
         >
           Per Tenant (<span id="matchedTenantCount">0</span>)
         </button>
@@ -136,79 +136,77 @@
       <!-- State Loading -->
       <div id="loadingState" class="space-y-3">
         <div class="bg-white/90 rounded-2xl p-4 animate-pulse flex items-center gap-3.5">
-          <div class="w-12 h-12 rounded-xl bg-stone-200"></div>
+          <div class="w-11 h-11 rounded-xl bg-stone-200"></div>
           <div class="flex-1 space-y-2">
             <div class="h-4 bg-stone-200 rounded w-1/2"></div>
             <div class="h-3 bg-stone-100 rounded w-3/4"></div>
-            <div class="h-6 bg-orange-100 rounded-full w-24 mt-1"></div>
           </div>
         </div>
         <div class="bg-white/90 rounded-2xl p-4 animate-pulse flex items-center gap-3.5">
-          <div class="w-12 h-12 rounded-xl bg-stone-200"></div>
+          <div class="w-11 h-11 rounded-xl bg-stone-200"></div>
           <div class="flex-1 space-y-2">
             <div class="h-4 bg-stone-200 rounded w-2/5"></div>
             <div class="h-3 bg-stone-100 rounded w-2/3"></div>
-            <div class="h-6 bg-orange-100 rounded-full w-24 mt-1"></div>
           </div>
         </div>
       </div>
 
       <!-- State Error -->
-      <div id="errorState" class="hidden bg-white/95 rounded-2xl p-6 text-center shadow-md border border-red-100">
+      <div id="errorState" class="hidden bg-white/95 rounded-2xl p-6 text-center shadow-sm border border-stone-200">
         <p class="text-sm font-bold text-stone-800">Gagal memuat daftar menu</p>
         <p id="errorDetail" class="text-xs text-stone-500 mt-1">Periksa koneksi internet Anda lalu coba lagi.</p>
         <button
           type="button"
           onclick="loadMenuData()"
-          class="mt-4 px-4 py-2 bg-orange-600 hover:bg-orange-700 text-white text-xs font-bold rounded-xl transition"
+          class="mt-4 px-4 py-2 bg-zinc-900 text-white text-xs font-bold rounded-xl transition"
         >
           Muat Ulang
         </button>
       </div>
 
       <!-- State Pencarian Kosong -->
-      <div id="emptyState" class="hidden bg-white/95 rounded-2xl p-8 text-center shadow-md">
+      <div id="emptyState" class="hidden bg-white/95 rounded-2xl p-8 text-center shadow-sm">
         <p class="text-sm font-bold text-stone-800">Menu atau tenant tidak ditemukan</p>
         <p class="text-xs text-stone-500 mt-1">Coba kata kunci lain atau reset filter yang sedang aktif.</p>
         <button
           type="button"
           onclick="resetFilters()"
-          class="mt-4 px-4 py-2 bg-amber-100 text-amber-900 text-xs font-bold rounded-xl hover:bg-amber-200 transition"
+          class="mt-4 px-4 py-2 bg-stone-100 text-stone-800 text-xs font-bold rounded-xl hover:bg-stone-200 transition"
         >
-          Reset Semua Filter
+          Reset Filter
         </button>
       </div>
 
       <!-- Container Kartu Tenant / Hasil Pencarian Menu -->
-      <div id="tenantGrid" class="space-y-3"></div>
+      <div id="tenantGrid" class="space-y-2.5"></div>
     </main>
 
     <!-- Footer -->
     <footer class="py-4 px-4 text-center">
-      <div class="inline-block bg-zinc-900/75 text-amber-100/90 backdrop-blur-xs text-[11px] font-medium px-3.5 py-1.5 rounded-full">
-        Ketuk tenant untuk lihat menu atau gunakan "+ Catat" untuk hitung total
+      <div class="inline-block bg-zinc-900/75 text-stone-200 backdrop-blur-xs text-[11px] font-medium px-3.5 py-1.5 rounded-full">
+        Ketuk tenant untuk lihat menu • Gunakan "+ Catat" untuk hitung total
       </div>
     </footer>
 
-    <!-- FLOATING BAR CATATAN PESANAN / WISHLIST -->
+    <!-- FLOATING BAR CATATAN PESANAN -->
     <div id="notesFloatingBar" class="fixed inset-x-0 bottom-3 z-30 max-w-md mx-auto px-4 hidden">
       <button
         type="button"
         onclick="openNotesModal()"
-        class="w-full bg-zinc-900 hover:bg-zinc-800 text-white border border-amber-400/40 rounded-2xl px-4 py-3 shadow-2xl flex items-center justify-between gap-3 transition active:scale-[0.985]"
+        class="w-full bg-zinc-900 hover:bg-zinc-800 text-white rounded-2xl px-4 py-3 shadow-xl flex items-center justify-between gap-3 transition active:scale-[0.985]"
       >
         <div class="flex items-center gap-3 min-w-0 text-left">
-          <span id="notesCountBadge" class="w-8 h-8 rounded-xl bg-orange-600 text-white font-extrabold text-xs flex items-center justify-center shrink-0">
+          <span id="notesCountBadge" class="w-7 h-7 rounded-lg bg-orange-600 text-white font-bold text-xs flex items-center justify-center shrink-0">
             0
           </span>
           <div class="min-w-0">
-            <p class="text-xs font-extrabold text-amber-300 leading-tight">Catatan Pilihan Menu</p>
-            <p id="notesTenantSummary" class="text-[11px] text-stone-300 truncate mt-0.5">0 tenant • Ketuk untuk rincian</p>
+            <p class="text-xs font-bold text-white leading-tight">Catatan Pilihan Menu</p>
+            <p id="notesTenantSummary" class="text-[11px] text-stone-400 truncate mt-0.5">0 tenant dipilih</p>
           </div>
         </div>
         <div class="text-right shrink-0">
           <p class="text-[10px] text-stone-400">Estimasi</p>
-          <p id="notesTotalPrice" class="text-sm font-extrabold text-white tabular-nums">Rp 0</p>
+          <p id="notesTotalPrice" class="text-sm font-bold text-amber-300 tabular-nums">Rp 0</p>
         </div>
       </button>
     </div>
@@ -216,88 +214,88 @@
 
   <!-- WELCOME POPUP SAMBUTAN AWAL -->
   <div id="welcomeModal" class="fixed inset-0 z-50 hidden flex items-center justify-center p-4" role="dialog" aria-modal="true">
-    <div id="welcomeBackdrop" class="sheet-backdrop fixed inset-0 bg-zinc-950/65 backdrop-blur-[3px] opacity-0"></div>
+    <div id="welcomeBackdrop" class="sheet-backdrop fixed inset-0 bg-zinc-950/60 backdrop-blur-[2px] opacity-0"></div>
 
     <div
       id="welcomeCard"
-      class="welcome-card relative z-10 w-full max-w-sm bg-[#FAF6F1] border border-amber-200/80 rounded-3xl shadow-2xl overflow-hidden opacity-0 scale-95"
+      class="welcome-card relative z-10 w-full max-w-sm bg-[#FAF7F3] border border-stone-200 rounded-3xl shadow-2xl overflow-hidden opacity-0 scale-95"
     >
-      <div class="bg-gradient-to-br from-orange-600 via-orange-600 to-amber-600 px-6 pt-6 pb-8 text-center text-white relative">
-        <div class="w-16 h-16 mx-auto rounded-2xl bg-white p-2 shadow-lg flex items-center justify-center">
+      <div class="px-6 pt-6 pb-4 text-center">
+        <div class="w-14 h-14 mx-auto rounded-2xl bg-white p-2 border border-stone-200/80 shadow-xs flex items-center justify-center">
           <img
             src="/assets/logo-yogya-rasa.PNG"
             alt="Logo Yogya Rasa"
             class="w-full h-full object-contain"
           />
         </div>
-        <h2 class="text-lg font-extrabold tracking-tight mt-3.5 leading-snug">
-          Selamat Datang di Yogya Rasa!
+        <h2 class="text-base font-extrabold text-zinc-900 mt-3.5">
+          Selamat Datang di Yogya Rasa
         </h2>
-        <p class="text-xs text-orange-100 mt-1 leading-relaxed">
-          Pilih kategori di bawah atau langsung ketik menu favoritmu dari meja.
+        <p class="text-xs text-stone-500 mt-1 leading-relaxed">
+          Pilih kategori di bawah untuk melihat daftar menu dari 19 tenant.
         </p>
       </div>
 
-      <div class="px-5 py-5 -mt-3 bg-[#FAF6F1] rounded-t-3xl space-y-2.5">
+      <div class="px-5 pb-5 space-y-2">
         <button
           type="button"
           onclick="startWithCategory('Makanan')"
-          class="w-full flex items-center justify-between px-4 py-3 rounded-2xl bg-white hover:bg-orange-50 border border-stone-200/90 hover:border-orange-400 transition active:scale-[0.98] shadow-xs group"
+          class="w-full flex items-center justify-between px-4 py-3 rounded-2xl bg-white hover:bg-stone-50 border border-stone-200/90 transition active:scale-[0.98]"
         >
           <div class="flex items-center gap-3 text-left">
-            <span class="w-9 h-9 rounded-xl bg-orange-100 text-orange-700 flex items-center justify-center text-base shrink-0">🍽️</span>
+            <span class="w-8 h-8 rounded-xl bg-[#F4EFEA] flex items-center justify-center text-sm shrink-0">🍽️</span>
             <div>
-              <p class="text-sm font-extrabold text-zinc-900 group-hover:text-orange-700">Makanan Berat</p>
-              <p class="text-[11px] text-stone-500">Nasi, steak, ramen, baso, bebek & grill</p>
+              <p class="text-xs font-bold text-zinc-900">Makanan Berat</p>
+              <p class="text-[11px] text-stone-500">Nasi, steak, ramen, baso & bebek</p>
             </div>
           </div>
-          <span class="text-stone-400 group-hover:text-orange-600 font-bold text-sm">→</span>
+          <span class="text-stone-400 text-xs font-bold">→</span>
         </button>
 
         <button
           type="button"
           onclick="startWithCategory('Camilan')"
-          class="w-full flex items-center justify-between px-4 py-3 rounded-2xl bg-white hover:bg-orange-50 border border-stone-200/90 hover:border-orange-400 transition active:scale-[0.98] shadow-xs group"
+          class="w-full flex items-center justify-between px-4 py-3 rounded-2xl bg-white hover:bg-stone-50 border border-stone-200/90 transition active:scale-[0.98]"
         >
           <div class="flex items-center gap-3 text-left">
-            <span class="w-9 h-9 rounded-xl bg-amber-100 text-amber-800 flex items-center justify-center text-base shrink-0">🥟</span>
+            <span class="w-8 h-8 rounded-xl bg-[#F4EFEA] flex items-center justify-center text-sm shrink-0">🥟</span>
             <div>
-              <p class="text-sm font-extrabold text-zinc-900 group-hover:text-orange-700">Camilan & Jajanan</p>
-              <p class="text-[11px] text-stone-500">Dimsum mentai, pempek, batagor & snack</p>
+              <p class="text-xs font-bold text-zinc-900">Camilan & Jajanan</p>
+              <p class="text-[11px] text-stone-500">Dimsum, pempek, batagor & snack</p>
             </div>
           </div>
-          <span class="text-stone-400 group-hover:text-orange-600 font-bold text-sm">→</span>
+          <span class="text-stone-400 text-xs font-bold">→</span>
         </button>
 
         <button
           type="button"
           onclick="startWithCategory('Minuman')"
-          class="w-full flex items-center justify-between px-4 py-3 rounded-2xl bg-white hover:bg-orange-50 border border-stone-200/90 hover:border-orange-400 transition active:scale-[0.98] shadow-xs group"
+          class="w-full flex items-center justify-between px-4 py-3 rounded-2xl bg-white hover:bg-stone-50 border border-stone-200/90 transition active:scale-[0.98]"
         >
           <div class="flex items-center gap-3 text-left">
-            <span class="w-9 h-9 rounded-xl bg-sky-100 text-sky-700 flex items-center justify-center text-base shrink-0">🥤</span>
+            <span class="w-8 h-8 rounded-xl bg-[#F4EFEA] flex items-center justify-center text-sm shrink-0">🥤</span>
             <div>
-              <p class="text-sm font-extrabold text-zinc-900 group-hover:text-orange-700">Minuman Segar & Kopi</p>
-              <p class="text-[11px] text-stone-500">Kopi aren, thai tea, es oyen & jamu rempah</p>
+              <p class="text-xs font-bold text-zinc-900">Minuman Segar & Kopi</p>
+              <p class="text-[11px] text-stone-500">Kopi aren, thai tea, es oyen & jamu</p>
             </div>
           </div>
-          <span class="text-stone-400 group-hover:text-orange-600 font-bold text-sm">→</span>
+          <span class="text-stone-400 text-xs font-bold">→</span>
         </button>
 
         <button
           type="button"
           onclick="startWithCategory('Semua')"
-          class="w-full mt-2 py-3 rounded-2xl bg-zinc-900 hover:bg-zinc-800 text-amber-300 font-bold text-xs tracking-wide transition active:scale-[0.98] shadow-sm"
+          class="w-full mt-1.5 py-3 rounded-2xl bg-zinc-900 hover:bg-zinc-800 text-white font-bold text-xs transition active:scale-[0.98]"
         >
-          Lihat Semua 19 Tenant
+          Lihat Semua Tenant
         </button>
       </div>
     </div>
   </div>
 
-  <!-- BOTTOM SHEET / MODAL DETAIL MENU TENANT (VISUAL CARDS) -->
+  <!-- BOTTOM SHEET / MODAL DETAIL MENU TENANT (KALEM & MINIMALIS) -->
   <div id="menuModal" class="fixed inset-0 z-50 hidden" role="dialog" aria-modal="true">
-    <div id="modalBackdrop" class="sheet-backdrop fixed inset-0 bg-zinc-950/60 backdrop-blur-[2px] opacity-0"></div>
+    <div id="modalBackdrop" class="sheet-backdrop fixed inset-0 bg-zinc-950/55 backdrop-blur-[2px] opacity-0"></div>
 
     <div
       id="modalPanel"
@@ -305,23 +303,18 @@
     >
       <!-- Drag Handle -->
       <div class="pt-3 pb-1 flex justify-center shrink-0">
-        <div class="w-11 h-1.5 bg-stone-200 rounded-full"></div>
+        <div class="w-10 h-1 bg-stone-200 rounded-full"></div>
       </div>
 
       <!-- Header Modal -->
       <div class="px-5 pt-1.5 pb-3 border-b border-stone-100 flex items-start justify-between gap-3 shrink-0">
         <div class="flex items-center gap-3 min-w-0">
-          <div id="modalInitialBox" class="w-11 h-11 rounded-xl bg-zinc-900 text-amber-400 font-extrabold text-lg flex items-center justify-center shrink-0 shadow-xs">
+          <div id="modalInitialBox" class="w-10 h-10 rounded-xl bg-zinc-900 text-amber-300 font-bold text-base flex items-center justify-center shrink-0">
             T
           </div>
           <div class="min-w-0">
-            <div class="flex items-center gap-2">
-              <h2 id="modalTenantName" class="text-base font-extrabold text-zinc-900 truncate">Nama Tenant</h2>
-              <span id="modalTenantCategory" class="text-[10px] font-bold uppercase px-2 py-0.5 rounded bg-amber-100 text-amber-900 shrink-0">
-                Kategori
-              </span>
-            </div>
-            <p id="modalTenantMeta" class="text-xs text-stone-500 mt-0.5 truncate">Deskripsi • 0 menu tersedia</p>
+            <h2 id="modalTenantName" class="text-base font-extrabold text-zinc-900 truncate">Nama Tenant</h2>
+            <p id="modalTenantMeta" class="text-xs text-stone-500 mt-0.5 truncate">Deskripsi • 0 menu</p>
           </div>
         </div>
 
@@ -329,30 +322,28 @@
           id="closeModalBtn"
           type="button"
           aria-label="Tutup"
-          class="w-8 h-8 rounded-full bg-stone-100 hover:bg-stone-200 text-stone-600 flex items-center justify-center transition shrink-0"
+          class="w-8 h-8 rounded-full bg-stone-100 hover:bg-stone-200 text-stone-500 flex items-center justify-center transition shrink-0"
         >
-          <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24">
+          <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2.2" viewBox="0 0 24 24">
             <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
           </svg>
         </button>
       </div>
 
-      <!-- Kontrol Filter, Sub-Kategori Otomatis, & Urutkan Harga -->
-      <div class="px-5 py-2.5 bg-stone-50/95 border-b border-stone-100 shrink-0 space-y-2">
+      <!-- Kontrol Filter, Sub-Kategori, & Urutkan Harga -->
+      <div class="px-5 py-2.5 bg-[#FAF7F3] border-b border-stone-100 shrink-0 space-y-2">
         <!-- Input Cari di Tenant Ini -->
         <div id="modalSearchWrap" class="hidden">
           <input
             type="text"
             id="modalMenuSearch"
             placeholder="Cari menu di tenant ini..."
-            class="w-full px-3.5 py-2 bg-white border border-stone-200 focus:border-orange-600 rounded-xl text-xs outline-none transition"
+            class="w-full px-3.5 py-2 bg-white border border-stone-200 focus:border-orange-500 rounded-xl text-xs outline-none transition"
           />
         </div>
 
-        <!-- Sub-Tab Pengelompokan Otomatis (Jika tenant punya >= 2 grup menu) -->
-        <div id="modalSubGroupWrap" class="hidden flex items-center gap-1.5 overflow-x-auto no-scrollbar pb-0.5">
-          <!-- Dirender dinamis lewat JS -->
-        </div>
+        <!-- Sub-Tab Pengelompokan Otomatis -->
+        <div id="modalSubGroupWrap" class="hidden flex items-center gap-1.5 overflow-x-auto no-scrollbar pb-0.5"></div>
 
         <!-- Bar Urutkan Harga & Filter Hemat -->
         <div class="flex items-center justify-between gap-2 overflow-x-auto no-scrollbar">
@@ -361,7 +352,7 @@
               type="button"
               data-sort="default"
               onclick="setModalSort('default')"
-              class="modal-sort-btn px-2.5 py-1 rounded-lg text-[11px] font-bold border transition"
+              class="modal-sort-btn px-2.5 py-1 rounded-lg text-[11px] font-semibold border transition"
             >
               Default
             </button>
@@ -369,7 +360,7 @@
               type="button"
               data-sort="asc"
               onclick="setModalSort('asc')"
-              class="modal-sort-btn px-2.5 py-1 rounded-lg text-[11px] font-bold border transition"
+              class="modal-sort-btn px-2.5 py-1 rounded-lg text-[11px] font-semibold border transition"
             >
               Termurah
             </button>
@@ -377,7 +368,7 @@
               type="button"
               data-sort="desc"
               onclick="setModalSort('desc')"
-              class="modal-sort-btn px-2.5 py-1 rounded-lg text-[11px] font-bold border transition"
+              class="modal-sort-btn px-2.5 py-1 rounded-lg text-[11px] font-semibold border transition"
             >
               Termahal
             </button>
@@ -387,32 +378,30 @@
             id="modalBudgetToggle"
             type="button"
             onclick="toggleModalBudget()"
-            class="px-2.5 py-1 rounded-lg text-[11px] font-bold border transition shrink-0"
+            class="px-2.5 py-1 rounded-lg text-[11px] font-semibold border transition shrink-0"
           >
             &lt; Rp 20rb
           </button>
         </div>
       </div>
 
-      <!-- Daftar Kartu Menu Visual -->
-      <div id="modalMenuList" class="px-4 py-3 overflow-y-auto space-y-2.5 flex-1 bg-stone-50/40">
-        <!-- Item menu dirender lewat JS -->
-      </div>
+      <!-- Daftar Kartu Menu Kalem -->
+      <div id="modalMenuList" class="px-4 py-3 overflow-y-auto space-y-2 flex-1 bg-[#FAF7F3]/60"></div>
 
       <!-- Footer Modal: Navigasi Antar Tenant + Tombol Tutup -->
-      <div class="p-3.5 border-t border-stone-100 bg-[#FAF6F1] shrink-0 flex items-center gap-2">
+      <div class="p-3.5 border-t border-stone-100 bg-white shrink-0 flex items-center gap-2">
         <button
           type="button"
           onclick="navigateTenant(-1)"
           title="Tenant Sebelumnya"
-          class="px-3 py-2.5 rounded-xl bg-white hover:bg-stone-100 border border-stone-200 text-stone-700 font-bold text-xs transition shrink-0"
+          class="px-3 py-2.5 rounded-xl bg-stone-100 hover:bg-stone-200 text-stone-700 font-semibold text-xs transition shrink-0"
         >
           ‹ Prev
         </button>
         <button
           id="bottomCloseBtn"
           type="button"
-          class="flex-1 py-2.5 rounded-xl bg-orange-600 hover:bg-orange-700 active:scale-[0.99] text-white font-bold text-xs shadow-sm transition"
+          class="flex-1 py-2.5 rounded-xl bg-zinc-900 hover:bg-zinc-800 active:scale-[0.99] text-white font-semibold text-xs transition"
         >
           Tutup Daftar Menu
         </button>
@@ -420,7 +409,7 @@
           type="button"
           onclick="navigateTenant(1)"
           title="Tenant Berikutnya"
-          class="px-3 py-2.5 rounded-xl bg-white hover:bg-stone-100 border border-stone-200 text-stone-700 font-bold text-xs transition shrink-0"
+          class="px-3 py-2.5 rounded-xl bg-stone-100 hover:bg-stone-200 text-stone-700 font-semibold text-xs transition shrink-0"
         >
           Next ›
         </button>
@@ -428,16 +417,16 @@
     </div>
   </div>
 
-  <!-- BOTTOM SHEET CATATAN PILIHAN MENU (WISHLIST) -->
+  <!-- BOTTOM SHEET CATATAN PILIHAN MENU -->
   <div id="notesModal" class="fixed inset-0 z-50 hidden" role="dialog" aria-modal="true">
-    <div id="notesBackdrop" class="sheet-backdrop fixed inset-0 bg-zinc-950/60 backdrop-blur-[2px] opacity-0"></div>
+    <div id="notesBackdrop" class="sheet-backdrop fixed inset-0 bg-zinc-950/55 backdrop-blur-[2px] opacity-0"></div>
 
     <div
       id="notesPanel"
       class="sheet-panel fixed inset-x-0 bottom-0 max-w-md mx-auto bg-white rounded-t-3xl shadow-2xl translate-y-full flex flex-col max-h-[85vh]"
     >
       <div class="pt-3 pb-1 flex justify-center shrink-0">
-        <div class="w-11 h-1.5 bg-stone-200 rounded-full"></div>
+        <div class="w-10 h-1 bg-stone-200 rounded-full"></div>
       </div>
 
       <div class="px-5 pt-2 pb-3 border-b border-stone-100 flex items-center justify-between gap-3 shrink-0">
@@ -448,27 +437,25 @@
         <button
           type="button"
           onclick="clearAllNotes()"
-          class="text-xs font-bold text-red-600 hover:text-red-700 bg-red-50 px-2.5 py-1.5 rounded-lg"
+          class="text-xs font-semibold text-stone-500 hover:text-red-600 px-2 py-1 rounded-lg"
         >
           Hapus Semua
         </button>
       </div>
 
-      <div id="notesListContainer" class="px-5 py-3 overflow-y-auto space-y-4 flex-1 bg-stone-50/40">
-        <!-- Daftar catatan dirender lewat JS -->
-      </div>
+      <div id="notesListContainer" class="px-5 py-3 overflow-y-auto space-y-3 flex-1 bg-[#FAF7F3]/60"></div>
 
-      <div class="p-4 border-t border-stone-100 bg-[#FAF6F1] shrink-0 space-y-2.5">
+      <div class="p-4 border-t border-stone-100 bg-white shrink-0 space-y-2.5">
         <div class="flex items-center justify-between px-1">
-          <span class="text-xs font-bold text-stone-600">Total Estimasi Belanja</span>
+          <span class="text-xs font-semibold text-stone-500">Total Estimasi</span>
           <span id="notesModalTotal" class="text-base font-extrabold text-zinc-900 tabular-nums">Rp 0</span>
         </div>
         <button
           type="button"
           onclick="closeNotesModal()"
-          class="w-full py-3 rounded-xl bg-zinc-900 hover:bg-zinc-800 text-amber-300 font-bold text-xs transition"
+          class="w-full py-3 rounded-xl bg-zinc-900 hover:bg-zinc-800 text-white font-semibold text-xs transition"
         >
-          Lanjut Lihat Menu Lainnya
+          Selesai
         </button>
       </div>
     </div>
@@ -479,20 +466,18 @@
     let categories = ["Semua"];
     let activeCategory = "Semua";
     let searchQuery = "";
-    let searchViewMode = "menus"; // 'menus' | 'tenants'
+    let searchViewMode = "menus";
     let onlyBudgetUnder20k = false;
 
-    // State khusus Modal Detail Tenant & History Back HP
     let activeModalTenant = null;
     let modalSortOrder = "default";
     let modalOnlyUnder20k = false;
     let activeModalSubGroup = "Semua";
-    let activeOverlayType = null; // null | 'welcome' | 'menu' | 'notes'
+    let activeOverlayType = null;
 
-    // State Catatan Pilihan Menu (Wishlist)
-    let savedNotes = []; // [{ key, tenantId, tenantName, nama_menu, harga, qty }]
+    let savedNotes = [];
 
-    // --- FORMATTER TEKS & VISUAL OTOMATIS (TANPA UBAH SPREADSHEET) ---
+    // --- FORMATTER TEKS RAPI (TITLE CASE) ---
     function formatTitleCase(str) {
       const upperAcronyms = new Set(["BBQ", "ML", "PCS", "TO", "DIY", "FC", "CF", "SD", "PET", "M", "L", "XL"]);
       const lowerWords = new Set(["dan", "atau", "di", "ke", "dari", "yang", "untuk", "dengan", "isi"]);
@@ -502,7 +487,6 @@
         .toLowerCase()
         .split(/\s+/)
         .map((word, idx) => {
-          // Tangani kata dengan garis miring atau tanda kurung, misal: DADAR/CEPLOK -> Dadar/Ceplok
           return word
             .split(/([\/\(\)\+])/)
             .map(part => {
@@ -517,53 +501,26 @@
         .join(" ");
     }
 
-    // Pilih ikon ilustrasi tematik berdasarkan kata kunci nama menu & kategori tenant
-    function getMenuVisualMeta(menuName, kategori = "") {
+    // Ikon netral lembut tanpa warna-warni mencolok
+    function getMenuIcon(menuName, kategori = "") {
       const text = `${menuName} ${kategori}`.toLowerCase();
 
-      if (/kopi|espresso|americano|latte|cappucino|cappuccino|machiato|aren|doppio/.test(text)) {
-        return { icon: "☕", bg: "bg-amber-100 text-amber-900" };
-      }
-      if (/matcha|green tea|greentea/.test(text)) {
-        return { icon: "🍵", bg: "bg-emerald-100 text-emerald-900" };
-      }
-      if (/es lilin/.test(text)) {
-        return { icon: "🍡", bg: "bg-pink-100 text-pink-900" };
-      }
-      if (/es |jus|alpukat|mangga|jeruk|strawberry|buah naga|teler|campur|sop buah|lemon|lychee|thai tea|teh|milk tea|tarik|aqua|minerale|sosro|pucuk|ice|minuman|rempah|kencur|kunyit|temulawak|jahe|galihan|seruni/.test(text)) {
-        return { icon: "🥤", bg: "bg-sky-100 text-sky-900" };
-      }
-      if (/ramen|udon|mie|yamin|jebew|jablay|spaghetti/.test(text)) {
-        return { icon: "🍜", bg: "bg-orange-100 text-orange-900" };
-      }
-      if (/dimsum|mentai|gyoza|siomay|batagor|pempek|kapal selam|lenjer|tekwan|lenggang|ngohiong|cireng|risoles|kroket|sempol|tahu baso/.test(text)) {
-        return { icon: "🥟", bg: "bg-amber-100 text-amber-800" };
-      }
-      if (/steak|beef|sirloin|tenderloin|gyudon|saikoro|bulgogi|grill|shabu|empal|rawon|bistik|lidah|buntut|iga|paru|babat/.test(text)) {
-        return { icon: "🥩", bg: "bg-rose-100 text-rose-900" };
-      }
-      if (/cumi|udang|ikan|nila|dori|kakap|tongkol|tenggiri/.test(text)) {
-        return { icon: "🦑", bg: "bg-cyan-100 text-cyan-900" };
-      }
-      if (/bebek/.test(text)) {
-        return { icon: "🍗", bg: "bg-orange-100 text-orange-900" };
-      }
-      if (/ayam|chicken|katsu|wings|oyakodon|ceker/.test(text)) {
-        return { icon: "🍗", bg: "bg-amber-100 text-amber-900" };
-      }
-      if (/baso|bakso|seblak|sop|soto|pindang|zuppa/.test(text)) {
-        return { icon: "🍲", bg: "bg-red-100 text-red-900" };
-      }
-      if (/burger|french fries|sausage|saussage/.test(text)) {
-        return { icon: "🍔", bg: "bg-yellow-100 text-yellow-900" };
-      }
-      if (/nasi|bento|rice bowl|timbel/.test(text)) {
-        return { icon: "🍱", bg: "bg-orange-100 text-orange-900" };
-      }
-      return { icon: "🍴", bg: "bg-stone-100 text-stone-700" };
+      if (/kopi|espresso|americano|latte|cappucino|cappuccino|machiato|aren|doppio/.test(text)) return "☕";
+      if (/matcha|green tea|greentea/.test(text)) return "🍵";
+      if (/es lilin/.test(text)) return "🍡";
+      if (/es |jus|alpukat|mangga|jeruk|strawberry|buah naga|teler|campur|sop buah|lemon|lychee|thai tea|teh|milk tea|tarik|aqua|minerale|sosro|pucuk|ice|minuman|rempah|kencur|kunyit|temulawak|jahe|galihan|seruni/.test(text)) return "🥤";
+      if (/ramen|udon|mie|yamin|jebew|jablay|spaghetti/.test(text)) return "🍜";
+      if (/dimsum|mentai|gyoza|siomay|batagor|pempek|kapal selam|lenjer|tekwan|lenggang|ngohiong|cireng|risoles|kroket|sempol|tahu baso/.test(text)) return "🥟";
+      if (/steak|beef|sirloin|tenderloin|gyudon|saikoro|bulgogi|grill|shabu|empal|rawon|bistik|lidah|buntut|iga|paru|babat/.test(text)) return "🥩";
+      if (/cumi|udang|ikan|nila|dori|kakap|tongkol|tenggiri/.test(text)) return "🦑";
+      if (/bebek|ayam|chicken|katsu|wings|oyakodon|ceker/.test(text)) return "🍗";
+      if (/baso|bakso|seblak|sop|soto|pindang|zuppa/.test(text)) return "🍲";
+      if (/burger|french fries|sausage|saussage/.test(text)) return "🍔";
+      if (/nasi|bento|rice bowl|timbel/.test(text)) return "🍱";
+      return "🍽️";
     }
 
-    // Deteksi sub-kategori otomatis di dalam 1 tenant agar menu panjang terkelompok rapi
+    // Sub-kelompok menu otomatis
     function detectSubGroup(menuName) {
       const m = menuName.toLowerCase();
       if (/paket|komplit|bento|rice bowl|timbel/.test(m)) return "Paket & Nasi";
@@ -574,7 +531,7 @@
       if (/ramen|udon|mie|yamin|seblak/.test(m)) return "Mie & Kuah";
       if (/steak|grill|shabu/.test(m)) return "Steak & Grill";
       if (/kopi|espresso|americano|latte|cappucino|aren/.test(m)) return "Kopi";
-      if (/matcha|coklat|chocolate|red velvet|taro|pistachio/.test(m)) return "Non-Kopi & Creamy";
+      if (/matcha|coklat|chocolate|red velvet|taro|pistachio/.test(m)) return "Non-Kopi";
       if (/cheesy|cream/.test(m)) return "Cream Cheesy";
       return "Menu Lainnya";
     }
@@ -598,7 +555,7 @@
       return clean ? clean.charAt(0).toUpperCase() : "T";
     }
 
-    // --- DUKUNGAN TOMBOL BACK HP (HISTORY API) ---
+    // --- DUKUNGAN TOMBOL BACK HP ---
     function pushOverlayHistory(type) {
       activeOverlayType = type;
       if (!history.state || history.state.overlay !== type) {
@@ -668,20 +625,20 @@
       closeWelcomeModal();
     }
 
-    // --- FILTER KATEGORI, PENCARIAN & BUDGET ---
+    // --- FILTER KATEGORI & BUDGET ---
     function renderCategories() {
       const container = document.getElementById("categoryPills");
       container.innerHTML = categories.map(cat => {
         const isActive = cat === activeCategory;
         const btnClass = isActive
-          ? "bg-orange-600 text-white shadow-xs border-orange-600"
-          : "bg-amber-100/90 text-amber-900 border-amber-200/80 hover:bg-amber-200/80";
+          ? "bg-zinc-900 text-white border-zinc-900"
+          : "bg-white text-stone-700 border-stone-200 hover:bg-stone-100";
 
         return `
           <button
             type="button"
             onclick="selectCategory('${escapeHtml(cat).replace(/'/g, "\\'")}')"
-            class="px-3.5 py-1.5 rounded-full text-xs font-bold border whitespace-nowrap transition active:scale-95 ${btnClass}"
+            class="px-3.5 py-1.5 rounded-full text-xs font-semibold border whitespace-nowrap transition active:scale-95 ${btnClass}"
           >
             ${escapeHtml(cat)}
           </button>
@@ -706,10 +663,10 @@
       const notice = document.getElementById("activeFilterNotice");
 
       if (onlyBudgetUnder20k) {
-        btn.className = "px-3 py-1.5 rounded-full text-xs font-bold border whitespace-nowrap transition active:scale-95 bg-emerald-600 text-white border-emerald-600 shadow-xs flex items-center gap-1 shrink-0";
+        btn.className = "px-3 py-1.5 rounded-full text-xs font-semibold border whitespace-nowrap transition active:scale-95 bg-emerald-700 text-white border-emerald-700 shrink-0";
         notice.classList.remove("hidden");
       } else {
-        btn.className = "px-3 py-1.5 rounded-full text-xs font-bold border whitespace-nowrap transition active:scale-95 bg-white text-emerald-800 border-emerald-300/90 hover:bg-emerald-50 flex items-center gap-1 shrink-0";
+        btn.className = "px-3 py-1.5 rounded-full text-xs font-semibold border whitespace-nowrap transition active:scale-95 bg-white text-stone-700 border-stone-200 hover:border-emerald-400 shrink-0";
         notice.classList.add("hidden");
       }
 
@@ -722,7 +679,7 @@
       onlyBudgetUnder20k = false;
       document.getElementById("searchInput").value = "";
       document.getElementById("clearSearchBtn").classList.add("hidden");
-      document.getElementById("budgetFilterBtn").className = "px-3 py-1.5 rounded-full text-xs font-bold border whitespace-nowrap transition active:scale-95 bg-white text-emerald-800 border-emerald-300/90 hover:bg-emerald-50 flex items-center gap-1 shrink-0";
+      document.getElementById("budgetFilterBtn").className = "px-3 py-1.5 rounded-full text-xs font-semibold border whitespace-nowrap transition active:scale-95 bg-white text-stone-700 border-stone-200 hover:border-emerald-400 shrink-0";
       document.getElementById("activeFilterNotice").classList.add("hidden");
       renderCategories();
       renderMainView();
@@ -734,7 +691,7 @@
       return Math.min(...validPrices);
     }
 
-    // --- CATATAN PESANAN (WISHLIST) LOGIC ---
+    // --- CATATAN PESANAN ---
     function getNoteQty(tenantId, menuName) {
       const key = `${tenantId}::${menuName}`;
       const found = savedNotes.find(item => item.key === key);
@@ -803,7 +760,7 @@
       const uniqueTenants = new Set(savedNotes.map(item => item.tenantId)).size;
 
       document.getElementById("notesCountBadge").textContent = totalItems;
-      document.getElementById("notesTenantSummary").textContent = `${uniqueTenants} tenant dipilih • Ketuk untuk rincian`;
+      document.getElementById("notesTenantSummary").textContent = `${uniqueTenants} tenant dipilih`;
       document.getElementById("notesTotalPrice").textContent = formatRupiah(totalPrice);
       bar.classList.remove("hidden");
     }
@@ -858,7 +815,6 @@
         return;
       }
 
-      // Kelompokkan berdasarkan tenant
       const grouped = {};
       savedNotes.forEach(item => {
         if (!grouped[item.tenantId]) {
@@ -878,23 +834,23 @@
           return `
             <div class="py-2.5 flex items-center justify-between gap-2">
               <div class="min-w-0 flex-1">
-                <p class="text-xs font-bold text-stone-800 leading-snug">${escapeHtml(formatTitleCase(item.nama_menu))}</p>
+                <p class="text-xs font-semibold text-stone-800 leading-snug">${escapeHtml(formatTitleCase(item.nama_menu))}</p>
                 <p class="text-[11px] text-stone-500 mt-0.5">${escapeHtml(formatRupiah(item.harga))} × ${item.qty}</p>
               </div>
               <div class="flex items-center gap-1.5 shrink-0">
                 <button type="button" onclick="updateNoteQty('${safeTenantId}', '${safeMenuRaw}', -1)" class="w-6 h-6 rounded-lg bg-stone-100 hover:bg-stone-200 font-bold text-xs text-stone-700">-</button>
-                <span class="w-5 text-center text-xs font-extrabold">${item.qty}</span>
-                <button type="button" onclick="updateNoteQty('${safeTenantId}', '${safeMenuRaw}', 1)" class="w-6 h-6 rounded-lg bg-orange-600 text-white font-bold text-xs">+</button>
+                <span class="w-5 text-center text-xs font-bold">${item.qty}</span>
+                <button type="button" onclick="updateNoteQty('${safeTenantId}', '${safeMenuRaw}', 1)" class="w-6 h-6 rounded-lg bg-zinc-900 text-white font-bold text-xs">+</button>
               </div>
             </div>
           `;
         }).join("");
 
         return `
-          <div class="bg-white border border-stone-200/90 rounded-2xl p-3.5 shadow-2xs">
+          <div class="bg-white border border-stone-200/80 rounded-2xl p-3.5">
             <div class="flex items-center justify-between pb-2 border-b border-stone-100">
-              <span class="text-xs font-extrabold text-zinc-900">🏪 ${escapeHtml(group.tenantName)}</span>
-              <span class="text-[11px] font-bold text-orange-700">${escapeHtml(formatRupiah(subTotal))}</span>
+              <span class="text-xs font-bold text-zinc-900">${escapeHtml(group.tenantName)}</span>
+              <span class="text-[11px] font-semibold text-stone-600">${escapeHtml(formatRupiah(subTotal))}</span>
             </div>
             <div class="divide-y divide-stone-100">${rowsHtml}</div>
           </div>
@@ -902,7 +858,7 @@
       }).join("");
     }
 
-    // --- RENDER HALAMAN UTAMA (KARTU TENANT / HASIL MENU LANGSUNG) ---
+    // --- RENDER HALAMAN UTAMA ---
     function renderMainView() {
       const grid = document.getElementById("tenantGrid");
       const emptyState = document.getElementById("emptyState");
@@ -910,10 +866,8 @@
       const searchModeBar = document.getElementById("searchModeBar");
       const q = searchQuery.toLowerCase().trim();
 
-      // Filter tenant sesuai kategori & budget
       const categoryTenants = allTenants.filter(t => activeCategory === "Semua" || t.kategori === activeCategory);
 
-      // Kumpulkan semua menu yang cocok jika ada pencarian
       const matchedMenuItems = [];
       if (q) {
         categoryTenants.forEach(tenant => {
@@ -927,7 +881,6 @@
         });
       }
 
-      // Filter daftar kartu tenant
       const filteredTenants = categoryTenants.filter(tenant => {
         if (onlyBudgetUnder20k) {
           const hasAffordable = (tenant.menus || []).some(m => Number(m.harga) > 0 && Number(m.harga) < 20000);
@@ -947,21 +900,20 @@
 
       badge.textContent = `${filteredTenants.length} Tenant`;
 
-      // Tampilkan switcher mode saat user mengetik pencarian
       if (q) {
         searchModeBar.classList.remove("hidden");
         document.getElementById("matchedMenuCount").textContent = matchedMenuItems.length;
         document.getElementById("matchedTenantCount").textContent = filteredTenants.length;
 
-        const activeTabClass = "flex-1 py-1.5 rounded-lg text-xs font-extrabold transition bg-zinc-900 text-amber-300 shadow-2xs";
-        const inactiveTabClass = "flex-1 py-1.5 rounded-lg text-xs font-bold transition text-stone-600 hover:bg-stone-200/60";
+        const activeTabClass = "flex-1 py-1.5 rounded-lg text-xs font-bold transition bg-zinc-900 text-white";
+        const inactiveTabClass = "flex-1 py-1.5 rounded-lg text-xs font-semibold transition text-stone-600 hover:bg-stone-200/60";
         document.getElementById("modeMenuBtn").className = searchViewMode === "menus" ? activeTabClass : inactiveTabClass;
         document.getElementById("modeTenantBtn").className = searchViewMode === "tenants" ? activeTabClass : inactiveTabClass;
       } else {
         searchModeBar.classList.add("hidden");
       }
 
-      // MODE 1: HASIL PENCARIAN LANGSUNG PER ITEM MENU (COCOK UNTUK YANG MAGER KELILING)
+      // MODE HASIL PENCARIAN LANGSUNG PER MENU
       if (q && searchViewMode === "menus") {
         if (matchedMenuItems.length === 0) {
           grid.innerHTML = "";
@@ -971,37 +923,36 @@
         emptyState.classList.add("hidden");
 
         grid.innerHTML = matchedMenuItems.slice(0, 60).map(({ tenant, menu }) => {
-          const visual = getMenuVisualMeta(menu.nama_menu, tenant.kategori);
+          const icon = getMenuIcon(menu.nama_menu, tenant.kategori);
           const formattedName = formatTitleCase(menu.nama_menu);
           const qty = getNoteQty(tenant.id, menu.nama_menu);
           const safeTenantId = escapeHtml(tenant.id).replace(/'/g, "\\'");
           const safeMenuRaw = escapeHtml(menu.nama_menu).replace(/'/g, "\\'");
 
           const actionControl = qty > 0
-            ? `<div class="inline-flex items-center gap-1.5 bg-orange-50 border border-orange-300 rounded-lg px-1.5 py-0.5">
-                 <button type="button" onclick="updateNoteQty('${safeTenantId}', '${safeMenuRaw}', -1)" class="w-5 h-5 rounded bg-white text-orange-700 font-extrabold text-xs">-</button>
-                 <span class="text-xs font-extrabold text-orange-900 px-1">${qty}</span>
-                 <button type="button" onclick="updateNoteQty('${safeTenantId}', '${safeMenuRaw}', 1)" class="w-5 h-5 rounded bg-orange-600 text-white font-extrabold text-xs">+</button>
+            ? `<div class="inline-flex items-center gap-1.5 bg-stone-100 rounded-lg px-1.5 py-0.5">
+                 <button type="button" onclick="updateNoteQty('${safeTenantId}', '${safeMenuRaw}', -1)" class="w-5 h-5 rounded bg-white text-stone-700 font-bold text-xs">-</button>
+                 <span class="text-xs font-bold text-zinc-900 px-1">${qty}</span>
+                 <button type="button" onclick="updateNoteQty('${safeTenantId}', '${safeMenuRaw}', 1)" class="w-5 h-5 rounded bg-zinc-900 text-white font-bold text-xs">+</button>
                </div>`
-            : `<button type="button" onclick="updateNoteQty('${safeTenantId}', '${safeMenuRaw}', 1)" class="px-2.5 py-1 rounded-lg bg-stone-100 hover:bg-orange-600 text-stone-700 hover:text-white text-[11px] font-bold transition">+ Catat</button>`;
+            : `<button type="button" onclick="updateNoteQty('${safeTenantId}', '${safeMenuRaw}', 1)" class="px-2.5 py-1 rounded-lg bg-stone-100 hover:bg-zinc-900 text-stone-700 hover:text-white text-[11px] font-semibold transition">+ Catat</button>`;
 
           return `
-            <div class="bg-white/95 border border-stone-200/90 rounded-2xl p-3.5 shadow-sm flex items-center gap-3">
-              <div class="w-11 h-11 rounded-xl ${visual.bg} flex items-center justify-center text-lg shrink-0">
-                ${visual.icon}
+            <div class="bg-white/95 border border-stone-200/80 rounded-2xl p-3.5 shadow-xs flex items-center gap-3">
+              <div class="w-10 h-10 rounded-xl bg-[#F4EFEA] flex items-center justify-center text-base shrink-0">
+                ${icon}
               </div>
               <div class="min-w-0 flex-1">
                 <button
                   type="button"
                   onclick="openTenantModal('${safeTenantId}')"
-                  class="inline-flex items-center gap-1 text-[10px] font-extrabold text-orange-700 bg-orange-50 border border-orange-200/80 px-2 py-0.5 rounded-md mb-1 hover:bg-orange-100"
+                  class="text-[11px] font-semibold text-stone-500 hover:text-orange-700 mb-0.5 block truncate text-left"
                 >
-                  <span>🏪 ${escapeHtml(tenant.nama_tenant)}</span>
-                  <span>›</span>
+                  ${escapeHtml(tenant.nama_tenant)} ›
                 </button>
-                <p class="text-sm font-bold text-zinc-900 leading-snug">${escapeHtml(formattedName)}</p>
+                <p class="text-[13.5px] font-bold text-zinc-900 leading-snug">${escapeHtml(formattedName)}</p>
                 <div class="mt-2 flex items-center justify-between gap-2">
-                  <span class="text-sm font-extrabold text-zinc-900 tabular-nums">${escapeHtml(formatRupiah(menu.harga))}</span>
+                  <span class="text-[13px] font-bold text-zinc-800 tabular-nums">${escapeHtml(formatRupiah(menu.harga))}</span>
                   ${actionControl}
                 </div>
               </div>
@@ -1011,7 +962,7 @@
         return;
       }
 
-      // MODE 2: DAFTAR KARTU TENANT + PRATINJAU 2 MENU UNGGULAN
+      // MODE DAFTAR KARTU TENANT
       if (filteredTenants.length === 0) {
         grid.innerHTML = "";
         emptyState.classList.remove("hidden");
@@ -1022,15 +973,13 @@
       grid.innerHTML = filteredTenants.map(tenant => {
         const minPrice = getMinPrice(tenant.menus);
         const affordableCount = (tenant.menus || []).filter(m => Number(m.harga) > 0 && Number(m.harga) < 20000).length;
-
-        // Ambil 2 contoh menu pertama sebagai pratinjau visual di kartu depan
         const previewItems = (tenant.menus || [])
           .slice(0, 2)
           .map(m => formatTitleCase(m.nama_menu))
           .join(" • ");
 
         const pricePill = minPrice
-          ? `<span class="text-[11px] font-semibold text-stone-500">Mulai <strong class="text-stone-800">${escapeHtml(formatRupiah(minPrice))}</strong></span>`
+          ? `<span class="text-[11px] text-stone-500">Mulai <strong class="font-semibold text-stone-700">${escapeHtml(formatRupiah(minPrice))}</strong></span>`
           : "";
 
         const buttonText = onlyBudgetUnder20k
@@ -1042,17 +991,17 @@
             onclick="openTenantModal('${escapeHtml(tenant.id).replace(/'/g, "\\'")}')"
             role="button"
             tabindex="0"
-            class="group bg-white/95 hover:bg-white border border-stone-200/90 hover:border-orange-400 rounded-2xl p-4 shadow-md hover:shadow-lg transition-all duration-150 cursor-pointer active:scale-[0.985]"
+            class="group bg-white/95 hover:bg-white border border-stone-200/85 hover:border-stone-300 rounded-2xl p-4 shadow-sm transition-all duration-150 cursor-pointer active:scale-[0.985]"
           >
             <div class="flex items-start gap-3.5">
-              <div class="w-12 h-12 rounded-xl bg-zinc-900 text-amber-400 font-extrabold text-lg flex items-center justify-center shadow-xs shrink-0 group-hover:bg-orange-600 group-hover:text-white transition-colors">
+              <div class="w-11 h-11 rounded-xl bg-zinc-900 text-amber-300 font-bold text-base flex items-center justify-center shrink-0">
                 ${escapeHtml(getInitial(tenant.nama_tenant))}
               </div>
 
               <div class="min-w-0 flex-1">
                 <div class="flex items-center justify-between gap-2">
                   <h2 class="text-[15px] font-extrabold text-zinc-900 truncate">${escapeHtml(tenant.nama_tenant)}</h2>
-                  <span class="text-[10px] font-bold uppercase tracking-wider px-2 py-0.5 rounded-md bg-stone-100 text-stone-600 shrink-0">
+                  <span class="text-[10px] font-semibold uppercase tracking-wide px-2 py-0.5 rounded-md bg-stone-100 text-stone-500 shrink-0">
                     ${escapeHtml(tenant.kategori)}
                   </span>
                 </div>
@@ -1061,12 +1010,12 @@
                   ${escapeHtml(tenant.deskripsi || `${tenant.total_menu} pilihan menu tersedia`)}
                 </p>
 
-                ${previewItems ? `<p class="text-[11px] text-stone-400 mt-1.5 line-clamp-1 italic">Contoh: ${escapeHtml(previewItems)}</p>` : ""}
+                ${previewItems ? `<p class="text-[11px] text-stone-400 mt-1.5 line-clamp-1">${escapeHtml(previewItems)}</p>` : ""}
 
                 <div class="mt-3 flex items-center justify-between gap-2 flex-wrap">
-                  <span class="inline-flex items-center gap-1 px-3 py-1 rounded-full bg-orange-50 group-hover:bg-orange-600 text-orange-600 group-hover:text-white border border-orange-200 group-hover:border-orange-600 text-xs font-bold transition-colors">
+                  <span class="inline-flex items-center gap-1 px-3 py-1 rounded-full bg-orange-50/90 group-hover:bg-orange-600 text-orange-700 group-hover:text-white text-xs font-bold transition-colors">
                     ${buttonText}
-                    <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24">
+                    <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-width="2.2" viewBox="0 0 24 24">
                       <path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7" />
                     </svg>
                   </span>
@@ -1087,7 +1036,6 @@
       const groups = (activeModalTenant.menus || []).map(m => detectSubGroup(m.nama_menu));
       const uniqueGroups = [...new Set(groups)];
 
-      // Munculkan pil sub-kategori hanya jika ada minimal 2 kelompok berbeda & total menu >= 8
       if (uniqueGroups.length < 2 || (activeModalTenant.menus || []).length < 8) {
         wrap.classList.add("hidden");
         wrap.innerHTML = "";
@@ -1099,13 +1047,13 @@
       wrap.innerHTML = tabList.map(grp => {
         const isSelected = grp === activeModalSubGroup;
         const cls = isSelected
-          ? "bg-orange-600 text-white border-orange-600 shadow-2xs"
-          : "bg-white text-stone-700 border-stone-200 hover:bg-orange-50";
+          ? "bg-zinc-900 text-white border-zinc-900"
+          : "bg-white text-stone-600 border-stone-200 hover:bg-stone-100";
         return `
           <button
             type="button"
             onclick="selectModalSubGroup('${escapeHtml(grp).replace(/'/g, "\\'")}')"
-            class="px-2.5 py-1 rounded-full text-[11px] font-bold border whitespace-nowrap transition shrink-0 ${cls}"
+            class="px-2.5 py-1 rounded-full text-[11px] font-semibold border whitespace-nowrap transition shrink-0 ${cls}"
           >
             ${escapeHtml(grp)}
           </button>
@@ -1123,14 +1071,14 @@
       document.querySelectorAll(".modal-sort-btn").forEach(btn => {
         const isSelected = btn.getAttribute("data-sort") === modalSortOrder;
         btn.className = isSelected
-          ? "modal-sort-btn px-2.5 py-1 rounded-lg text-[11px] font-bold border transition bg-zinc-900 text-amber-300 border-zinc-900"
-          : "modal-sort-btn px-2.5 py-1 rounded-lg text-[11px] font-bold border transition bg-white text-stone-600 border-stone-200 hover:bg-stone-100";
+          ? "modal-sort-btn px-2.5 py-1 rounded-lg text-[11px] font-semibold border transition bg-zinc-900 text-white border-zinc-900"
+          : "modal-sort-btn px-2.5 py-1 rounded-lg text-[11px] font-semibold border transition bg-white text-stone-600 border-stone-200 hover:bg-stone-100";
       });
 
       const budgetBtn = document.getElementById("modalBudgetToggle");
       budgetBtn.className = modalOnlyUnder20k
-        ? "px-2.5 py-1 rounded-lg text-[11px] font-bold border transition shrink-0 bg-emerald-600 text-white border-emerald-600"
-        : "px-2.5 py-1 rounded-lg text-[11px] font-bold border transition shrink-0 bg-white text-emerald-700 border-emerald-300 hover:bg-emerald-50";
+        ? "px-2.5 py-1 rounded-lg text-[11px] font-semibold border transition shrink-0 bg-emerald-700 text-white border-emerald-700"
+        : "px-2.5 py-1 rounded-lg text-[11px] font-semibold border transition shrink-0 bg-white text-stone-600 border-stone-200 hover:border-emerald-400";
     }
 
     function setModalSort(order) {
@@ -1182,47 +1130,40 @@
 
       const safeTenantId = escapeHtml(activeModalTenant.id).replace(/'/g, "\\'");
 
-      listEl.innerHTML = items.map((item, idx) => {
+      listEl.innerHTML = items.map(item => {
         const priceNum = Number(item.harga) || 0;
         const formattedName = formatTitleCase(item.nama_menu);
-        const visual = getMenuVisualMeta(item.nama_menu, activeModalTenant.kategori);
+        const icon = getMenuIcon(item.nama_menu, activeModalTenant.kategori);
         const isMatch = (globalQ && item.nama_menu.toLowerCase().includes(globalQ)) ||
                         (localQ && item.nama_menu.toLowerCase().includes(localQ));
         const isAffordable = priceNum > 0 && priceNum < 20000;
-        const isTopPick = idx < 2 && modalSortOrder === "default" && activeModalSubGroup === "Semua" && !localQ && !modalOnlyUnder20k;
 
         const qty = getNoteQty(activeModalTenant.id, item.nama_menu);
         const safeMenuRaw = escapeHtml(item.nama_menu).replace(/'/g, "\\'");
 
         const noteBtnHtml = qty > 0
-          ? `<div class="inline-flex items-center gap-1 bg-orange-100 border border-orange-300 rounded-lg px-1.5 py-0.5">
-               <button type="button" onclick="updateNoteQty('${safeTenantId}', '${safeMenuRaw}', -1)" class="w-5 h-5 rounded bg-white text-orange-700 font-extrabold text-xs">-</button>
-               <span class="text-xs font-extrabold text-orange-950 px-1">${qty}</span>
-               <button type="button" onclick="updateNoteQty('${safeTenantId}', '${safeMenuRaw}', 1)" class="w-5 h-5 rounded bg-orange-600 text-white font-extrabold text-xs">+</button>
+          ? `<div class="inline-flex items-center gap-1.5 bg-stone-100 rounded-lg px-1.5 py-0.5">
+               <button type="button" onclick="updateNoteQty('${safeTenantId}', '${safeMenuRaw}', -1)" class="w-5 h-5 rounded bg-white text-stone-700 font-bold text-xs">-</button>
+               <span class="text-xs font-bold text-zinc-900 px-1">${qty}</span>
+               <button type="button" onclick="updateNoteQty('${safeTenantId}', '${safeMenuRaw}', 1)" class="w-5 h-5 rounded bg-zinc-900 text-white font-bold text-xs">+</button>
              </div>`
-          : `<button type="button" onclick="updateNoteQty('${safeTenantId}', '${safeMenuRaw}', 1)" class="px-2.5 py-1 rounded-lg bg-white hover:bg-orange-600 text-stone-600 hover:text-white border border-stone-200 hover:border-orange-600 text-[11px] font-bold transition">+ Catat</button>`;
+          : `<button type="button" onclick="updateNoteQty('${safeTenantId}', '${safeMenuRaw}', 1)" class="px-2.5 py-1 rounded-lg bg-stone-100 hover:bg-zinc-900 text-stone-600 hover:text-white text-[11px] font-semibold transition">+ Catat</button>`;
 
         return `
-          <div class="rounded-2xl p-3 border transition ${isMatch ? 'bg-orange-50/90 border-orange-300' : 'bg-[#FAF6F1]/90 border-stone-200/75'} flex items-start gap-3">
-            <!-- Avatar Ikon Makanan Tematik -->
-            <div class="w-10 h-10 rounded-xl ${visual.bg} flex items-center justify-center text-base shrink-0 mt-0.5 shadow-2xs">
-              ${visual.icon}
+          <div class="rounded-2xl p-3 border transition ${isMatch ? 'bg-amber-50/60 border-amber-300/80' : 'bg-white border-stone-200/70'} flex items-center gap-3">
+            <!-- Ikon Lembut Netral -->
+            <div class="w-9 h-9 rounded-xl bg-[#F4EFEA] flex items-center justify-center text-sm shrink-0">
+              ${icon}
             </div>
 
-            <!-- Nama Menu & Badge -->
+            <!-- Nama Menu, Harga & Catat -->
             <div class="min-w-0 flex-1">
-              <div class="flex items-center gap-1.5 flex-wrap mb-0.5">
-                <span class="text-[10px] font-bold text-stone-400">#${String(item.no || idx + 1).padStart(2, "0")}</span>
-                ${isTopPick ? '<span class="text-[10px] font-extrabold text-amber-800 bg-amber-200/80 px-1.5 py-0.2 rounded">⭐ Favorit</span>' : ''}
-                ${isAffordable ? '<span class="text-[10px] font-bold text-emerald-700 bg-emerald-100/80 px-1.5 py-0.2 rounded">Hemat &lt; 20rb</span>' : ''}
-              </div>
-
-              <p class="text-[13.5px] font-bold text-zinc-900 leading-snug">${escapeHtml(formattedName)}</p>
-
-              <div class="mt-2 flex items-center justify-between gap-2">
-                <span class="inline-block px-2.5 py-0.5 rounded-lg bg-white border border-stone-200/90 text-xs font-extrabold text-zinc-900 tabular-nums">
-                  ${escapeHtml(formatRupiah(item.harga))}
-                </span>
+              <p class="text-[13.5px] font-semibold text-zinc-900 leading-snug">${escapeHtml(formattedName)}</p>
+              <div class="mt-1.5 flex items-center justify-between gap-2">
+                <div class="flex items-center gap-2">
+                  <span class="text-[13px] font-bold text-zinc-900 tabular-nums">${escapeHtml(formatRupiah(item.harga))}</span>
+                  ${isAffordable ? '<span class="text-[10px] font-semibold text-emerald-700">• Hemat</span>' : ''}
+                </div>
                 ${noteBtnHtml}
               </div>
             </div>
@@ -1239,7 +1180,6 @@
 
       document.getElementById("modalInitialBox").textContent = getInitial(tenant.nama_tenant);
       document.getElementById("modalTenantName").textContent = tenant.nama_tenant;
-      document.getElementById("modalTenantCategory").textContent = tenant.kategori || "Kuliner";
       document.getElementById("modalTenantMeta").textContent =
         `${tenant.deskripsi ? tenant.deskripsi + " • " : ""}${tenant.total_menu} menu`;
 
@@ -1278,7 +1218,6 @@
       });
     }
 
-    // Navigasi Prev / Next antar tenant langsung dari dalam pop-up
     function navigateTenant(step) {
       if (!activeModalTenant || allTenants.length === 0) return;
       const pool = allTenants.filter(t => activeCategory === "Semua" || t.kategori === activeCategory);
