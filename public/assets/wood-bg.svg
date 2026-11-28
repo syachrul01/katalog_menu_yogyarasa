@@ -1,0 +1,96 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="600" height="600" viewBox="0 0 600 600">
+  <defs>
+    
+    <linearGradient id="plankA" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#E7C18C" />
+      <stop offset="45%" stop-color="#EBC896" />
+      <stop offset="100%" stop-color="#E0B67D" />
+    </linearGradient>
+    <linearGradient id="plankB" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#E2B980" />
+      <stop offset="55%" stop-color="#ECC998" />
+      <stop offset="100%" stop-color="#DFB47A" />
+    </linearGradient>
+    <linearGradient id="plankC" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#E6BF89" />
+      <stop offset="50%" stop-color="#E9C491" />
+      <stop offset="100%" stop-color="#DCB074" />
+    </linearGradient>
+
+    
+    <pattern id="fineWoodPores" width="40" height="200" patternUnits="userSpaceOnUse">
+      <line x1="3" y1="0" x2="3" y2="200" stroke="#C88E4B" stroke-width="0.6" opacity="0.22" />
+      <line x1="8" y1="0" x2="7.5" y2="200" stroke="#F6DCB4" stroke-width="0.7" opacity="0.28" />
+      <line x1="14" y1="0" x2="14.5" y2="200" stroke="#B97B38" stroke-width="0.5" opacity="0.2" />
+      <line x1="21" y1="0" x2="21" y2="200" stroke="#C88E4B" stroke-width="0.65" opacity="0.24" />
+      <line x1="27" y1="0" x2="26.5" y2="200" stroke="#F6DCB4" stroke-width="0.8" opacity="0.26" />
+      <line x1="33" y1="0" x2="33.5" y2="200" stroke="#B97B38" stroke-width="0.55" opacity="0.22" />
+      <line x1="38" y1="0" x2="38" y2="200" stroke="#C88E4B" stroke-width="0.5" opacity="0.18" />
+    </pattern>
+
+    
+    <filter id="organicGrain" x="0%" y="0%" width="100%" height="100%">
+      <feTurbulence type="fractalNoise" baseFrequency="0.015 0.14" numOctaves="3" seed="12" result="noise" />
+      <feColorMatrix type="matrix" values="
+        0 0 0 0 0.72
+        0 0 0 0 0.45
+        0 0 0 0 0.18
+        0 0 0 0.11 0" in="noise" result="coloredNoise" />
+      <feComposite operator="over" in="coloredNoise" in2="SourceGraphic" />
+    </filter>
+  </defs>
+
+  <g filter="url(#organicGrain)">
+    
+    <rect x="0" y="0" width="120" height="600" fill="url(#plankA)" />
+    <path d="M22 0 C18 140, 32 280, 22 600" fill="none" stroke="#C98B46" stroke-width="2" opacity="0.48" />
+    <path d="M55 0 C38 110, 40 210, 68 255 C92 220, 88 105, 72 0" fill="#D59A54" opacity="0.32" />
+    <path d="M55 0 C38 110, 40 210, 68 255 C92 220, 88 105, 72 0" fill="none" stroke="#BD7A36" stroke-width="2.2" opacity="0.55" />
+    <path d="M18 330 C45 360, 82 435, 76 490 C72 525, 38 560, 15 600" fill="#D2944D" opacity="0.28" />
+    <path d="M18 330 C45 360, 82 435, 76 490 C72 525, 38 560, 15 600" fill="none" stroke="#BA7632" stroke-width="2.4" opacity="0.52" />
+    <path d="M98 0 C94 200, 104 400, 98 600" fill="none" stroke="#C58640" stroke-width="1.6" opacity="0.45" />
+
+    
+    <rect x="120" y="0" width="215" height="600" fill="url(#plankB)" />
+    
+    <path d="M138 0 C134 180, 142 420, 138 600" fill="none" stroke="#C78842" stroke-width="1.8" opacity="0.5" />
+    <path d="M158 0 C152 170, 165 410, 158 600" fill="none" stroke="#BE7B35" stroke-width="2.1" opacity="0.52" />
+    <path d="M178 0 C172 150, 192 260, 182 420 C176 500, 178 550, 178 600" fill="none" stroke="#C98B46" stroke-width="2" opacity="0.48" />
+
+    
+    <path d="M202 0 C196 110, 214 195, 232 250 C252 310, 210 385, 202 470 C196 530, 200 570, 202 600" fill="none" stroke="#BA7732" stroke-width="2.6" opacity="0.58" />
+    <path d="M224 0 C218 95, 238 175, 258 235 C280 300, 235 390, 224 480 C218 535, 222 570, 224 600" fill="none" stroke="#C4833D" stroke-width="2.3" opacity="0.55" />
+    <path d="M248 0 C244 85, 265 155, 286 218 C312 295, 262 395, 248 490 C242 540, 246 575, 248 600" fill="none" stroke="#B7732E" stroke-width="2.8" opacity="0.6" />
+    <path d="M274 0 C272 75, 294 140, 312 200 C332 265, 292 380, 274 495 C268 545, 272 575, 274 600" fill="none" stroke="#C88A45" stroke-width="2.1" opacity="0.5" />
+    <path d="M302 0 C304 140, 316 320, 302 600" fill="none" stroke="#BF7C36" stroke-width="2" opacity="0.5" />
+    <path d="M322 0 C320 200, 325 400, 322 600" fill="none" stroke="#C98B46" stroke-width="1.6" opacity="0.45" />
+
+    
+    <rect x="335" y="0" width="180" height="600" fill="url(#plankC)" />
+    <path d="M356 0 C352 190, 362 410, 356 600" fill="none" stroke="#C88A45" stroke-width="1.7" opacity="0.45" />
+    <path d="M382 0 C376 160, 390 360, 382 600" fill="none" stroke="#C17F39" stroke-width="1.9" opacity="0.48" />
+    
+    <path d="M438 0 C432 55, 444 125, 456 155 C470 120, 488 45, 515 22 L515 240 C482 280, 458 345, 452 420 C446 490, 424 545, 412 600 L458 600 C468 530, 485 450, 495 360 C502 295, 510 265, 515 255 Z" fill="#D39650" opacity="0.34" />
+    <path d="M438 0 C432 55, 444 125, 456 155 C470 120, 488 45, 515 22" fill="none" stroke="#BC7833" stroke-width="2.1" opacity="0.52" />
+    <path d="M515 240 C482 280, 458 345, 452 420 C446 490, 424 545, 412 600" fill="none" stroke="#B97530" stroke-width="2.3" opacity="0.54" />
+    <path d="M496 0 C492 210, 502 410, 496 600" fill="none" stroke="#C58640" stroke-width="1.8" opacity="0.46" />
+
+    
+    <rect x="515" y="0" width="85" height="600" fill="url(#plankA)" />
+    <path d="M536 0 C532 180, 542 400, 536 600" fill="none" stroke="#C68741" stroke-width="1.8" opacity="0.48" />
+    <path d="M562 0 C556 150, 572 340, 562 600" fill="none" stroke="#BE7B35" stroke-width="2" opacity="0.5" />
+    
+    <path d="M600 445 C578 460, 555 478, 558 502 C561 522, 582 518, 600 508" fill="#D1924B" opacity="0.32" />
+    <path d="M600 445 C578 460, 555 478, 558 502 C561 522, 582 518, 600 508" fill="none" stroke="#B97530" stroke-width="2.2" opacity="0.54" />
+    <path d="M585 0 C582 200, 588 400, 585 600" fill="none" stroke="#C88A45" stroke-width="1.6" opacity="0.45" />
+
+    
+    <rect width="600" height="600" fill="url(#fineWoodPores)" />
+
+    
+    <line x1="120" y1="0" x2="120" y2="600" stroke="#A66526" stroke-width="1.2" opacity="0.42" />
+    <line x1="335" y1="0" x2="335" y2="600" stroke="#A66526" stroke-width="1.2" opacity="0.42" />
+    <line x1="515" y1="0" x2="515" y2="600" stroke="#A66526" stroke-width="1.2" opacity="0.42" />
+    <line x1="599.5" y1="0" x2="599.5" y2="600" stroke="#A66526" stroke-width="1.1" opacity="0.38" />
+  </g>
+</svg>
